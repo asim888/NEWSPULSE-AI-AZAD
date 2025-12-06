@@ -1,4 +1,4 @@
-import React, { ReactNode, Component, ErrorInfo } from 'react';
+import React, { ReactNode, ErrorInfo, Component } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
@@ -20,14 +20,11 @@ interface ErrorBoundaryState {
 
 // Error Boundary Component
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  // Explicitly declare state to fix TS error 'Property state does not exist'
-  public state: ErrorBoundaryState = { hasError: false, error: null };
-  // Explicitly declare props to fix TS error 'Property props does not exist'
-  public readonly props: ErrorBoundaryProps;
+  public state: ErrorBoundaryState;
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.props = props;
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
