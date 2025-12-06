@@ -12,7 +12,23 @@
         window.process = { env: {} };
       }
     </script>
-    
+    <script>
+  // DEBUG: Check if elements exist
+  console.log('Root element:', document.getElementById('root'));
+  console.log('Script loading...');
+</script>
+
+<div id="root">
+  <!-- Fallback content that shows immediately -->
+  <div style="min-height: 100vh; background: #000; display: flex; align-items: center; justify-content: center;">
+    <div style="text-align: center;">
+      <h1 style="color: #D4AF37; font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem;">
+        News Pulse AI
+      </h1>
+      <p style="color: #666;">Loading your dashboard...</p>
+    </div>
+  </div>
+</div>
     <!-- Tailwind CDN for styling (Runtime styling is used here instead of a build step for simplicity with dynamic config) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -94,18 +110,7 @@
           scrollbar-width: none;  /* Firefox */
       }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
-    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.86.2",
-    "vite": "https://aistudiocdn.com/vite@^7.2.6",
-    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
-  }
-}
+
 </script>
 </head>
   <body class="bg-noir-950 text-white font-sans antialiased overflow-x-hidden">
