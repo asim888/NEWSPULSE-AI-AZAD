@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Category, Article, TeamMember, UserState, EnhancedArticleContent, SubscriptionStatus, ToastMessage } from './types';
 import { APP_NAME, TAGLINE, ATTRIBUTION, FALLBACK_NEWS, LOGO_URL, TEAM, ASSET_LOGO_URL, SUBSCRIPTION_QR_URL, FALLBACK_ARTICLE_IMAGE } from './constants';
@@ -126,14 +127,14 @@ const InteractiveBackground = () => {
       // Add new particles (Fire trail emission)
       for(let k=0; k<3; k++) { // Reduced count
           const angle = Math.random() * Math.PI * 2;
-          const r = Math.random() * 4; // Reduced spread
+          const r = Math.random() * 2; // Reduced spread
           particles.push({
               x: ball.x + Math.cos(angle) * r,
               y: ball.y + Math.sin(angle) * r,
               vx: (Math.random() - 0.5) * 1, // Slower velocity
               vy: (Math.random() - 0.5) * 1 - 0.5,
               life: 1.0,
-              size: Math.random() * 3 + 1 // Smaller particles
+              size: Math.random() * 2 + 1 // Smaller particles
           });
       }
 
@@ -161,7 +162,7 @@ const InteractiveBackground = () => {
       }
 
       // Render Fireball Core - SMALLER
-      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 8); // Reduced radius
+      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 6); // Reduced radius
       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
       gradient.addColorStop(0.3, 'rgba(255, 215, 0, 0.6)');
       gradient.addColorStop(0.6, 'rgba(255, 69, 0, 0.2)');
@@ -169,7 +170,7 @@ const InteractiveBackground = () => {
 
       ctx.fillStyle = gradient;
       ctx.beginPath();
-      ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2); // Smaller radius (was 14)
+      ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2); // Smaller radius (was 14)
       ctx.fill();
 
       requestAnimationFrame(animate);
@@ -669,8 +670,10 @@ export default function App() {
   const handleEnter = () => {
     setHasEntered(true);
     if ('speechSynthesis' in window) {
-      const msg = new SpeechSynthesisUtterance("Welcome to News Pulse AI by Azad Studio. Bringing you news in your language, anytime, anywhere.");
+      // Enhanced pronunciation: "A. I." spaced out, "Azaad" phonetic spelling for Indian accent.
+      const msg = new SpeechSynthesisUtterance("Welcome to News Pulse A. I. by Azaad Studio. Bringing you news in your language, anytime, anywhere.");
       msg.lang = 'en-IN';
+      msg.rate = 0.9;
       window.speechSynthesis.speak(msg);
     }
   };
@@ -819,7 +822,7 @@ export default function App() {
           </button>
         </div>
         
-        <div className="bg-gradient-to-r from-[#5D4037] via-[#5E6C36] to-[#5D4037] text-white text-xs font-bold py-1 overflow-hidden relative whitespace-nowrap flex border-y border-gold-600/30 shadow-lg z-20">
+        <div className="bg-gradient-to-r from-[#3E2723] via-[#5D4037] to-[#3E2723] text-white text-xs font-bold py-1 overflow-hidden relative whitespace-nowrap flex border-y border-gold-600/30 shadow-lg z-20">
            <div className="animate-marquee inline-block px-4">
              {breakingHeadlines.length > 0 ? (
                 <>
@@ -884,32 +887,12 @@ export default function App() {
           <div className="space-y-12 animate-fade-in">
              <div className="text-center space-y-4">
                 <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                  Architects of <span className="text-gold-500">Truth</span> & <span className="text-gold-500">Technology</span>
+                  <span className="text-gold-500">The Visionaries</span>
                 </h2>
                 <div className="w-24 h-1 bg-gold-600 mx-auto rounded-full"></div>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-noir-900 border border-zinc-800 p-8 rounded-2xl relative overflow-hidden group hover:border-gold-600/30 transition-all">
-                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <IconCrown />
-                   </div>
-                   <h3 className="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4">Our Mission</h3>
-                   <p className="text-xl md:text-2xl font-serif text-white leading-relaxed">
-                     "To empower every citizen with unbiased, real-time news in the language they understand best. We bridge the gap between complex global events and local understanding."
-                   </p>
-                </div>
-                <div className="bg-noir-900 border border-zinc-800 p-8 rounded-2xl relative overflow-hidden group hover:border-gold-600/30 transition-all">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                       <IconCrown />
-                    </div>
-                   <h3 className="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4">Our Vision</h3>
-                   <p className="text-xl md:text-2xl font-serif text-gray-300 leading-relaxed">
-                     "A world where language is no longer a barrier to truth. We envision a digital ecosystem where AI serves humanity by making knowledge accessible, inclusive, and instant."
-                   </p>
-                </div>
-             </div>
-
+             {/* Founders Profiles (Photos & Bios) - FIRST */}
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {TEAM.map((founder, idx) => (
                    <div key={founder.name} className="bg-black border border-zinc-800 rounded-3xl overflow-hidden hover:border-gold-600 hover:shadow-[0_0_30px_rgba(170,140,44,0.2)] transition-all duration-500 group">
@@ -945,6 +928,28 @@ export default function App() {
                       </div>
                    </div>
                 ))}
+             </div>
+
+             {/* Mission & Vision Details - SECOND */}
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-noir-900 border border-zinc-800 p-8 rounded-2xl relative overflow-hidden group hover:border-gold-600/30 transition-all">
+                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <IconCrown />
+                   </div>
+                   <h3 className="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4">Our Mission</h3>
+                   <p className="text-xl md:text-2xl font-serif text-white leading-relaxed">
+                     "To empower every citizen with unbiased, real-time news in the language they understand best. We bridge the gap between complex global events and local understanding."
+                   </p>
+                </div>
+                <div className="bg-noir-900 border border-zinc-800 p-8 rounded-2xl relative overflow-hidden group hover:border-gold-600/30 transition-all">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                       <IconCrown />
+                    </div>
+                   <h3 className="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4">Our Vision</h3>
+                   <p className="text-xl md:text-2xl font-serif text-gray-300 leading-relaxed">
+                     "A world where language is no longer a barrier to truth. We envision a digital ecosystem where AI serves humanity by making knowledge accessible, inclusive, and instant."
+                   </p>
+                </div>
              </div>
           </div>
         ) : (
