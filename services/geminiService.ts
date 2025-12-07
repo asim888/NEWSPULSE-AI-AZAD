@@ -1,10 +1,8 @@
-
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 import { EnhancedArticleContent } from "../types";
 import { supabase, isSupabaseConfigured } from "./supabaseClient";
 import { getEnv } from "../utils/env";
 
-// In a real app, this would be environment variable. 
 let ai: GoogleGenAI | null = null;
 
 const getAI = () => {
@@ -17,36 +15,27 @@ const getAI = () => {
   return ai;
 };
 
-// --- In-Memory Cache (L1) ---
-// We keep this for the current session speed, but Supabase (L2) is the persistent layer.
 const articleMemoryCache = new Map<string, EnhancedArticleContent>();
 const audioMemoryCache = new Map<string, string>();
 
-// --- Helper for Device TTS Language ---
 export const getDeviceVoiceLang = (tab: string): string => {
     switch (tab) {
         case 'urdu': return 'ur-IN';
         case 'hindi': return 'hi-IN';
         case 'telugu': return 'te-IN';
-        // Roman Urdu uses English script, so we use English voice
         default: return 'en-IN';
     }
 };
-
-// --- Text Generation ---
 
 export const enhanceArticle = async (
   id: string,
   title: string,
   description: string
 ): Promise<EnhancedArticleContent> => {
-  // 1. Check L1 Memory Cache
   if (articleMemoryCache.has(id)) {
-    console.log(`[Memory Cache Hit] Article ${id}`);
     return articleMemoryCache.get(id)!;
   }
 
-  // 2. Check L2 Supabase Cache (Save Once, Use Forever)
   if (isSupabaseConfigured()) {
     try {
         const { data, error } = await supabase!
@@ -56,14 +45,11 @@ export const enhanceArticle = async (
             .single();
         
         if (data && !error) {
-            console.log(`[Supabase Cache Hit] Article ${id}`);
             const content = data.data as EnhancedArticleContent;
-            articleMemoryCache.set(id, content); // Hydrate memory cache
+            articleMemoryCache.set(id, content);
             return content;
         }
-    } catch (e) {
-        console.warn("Supabase cache check failed", e);
-    }
+    } catch (e) {}
   }
 
   const aiClient = getAI();
@@ -83,8 +69,6 @@ export const enhanceArticle = async (
     4. Translate the *Full Article* (from step 1) into Urdu (proper Urdu script/Nastaliq).
     5. Translate the *Full Article* (from step 1) into Hindi (Devanagari script).
     6. Translate the *Full Article* (from step 1) into Telugu (Telugu script).
-    
-    Also provide a short summary for Roman Urdu, Urdu, Hindi, and Telugu as separate fields.
     
     Output strictly in JSON format matching the schema.
   `;
@@ -122,25 +106,18 @@ export const enhanceArticle = async (
     if (!text) throw new Error("No response from AI");
     
     const content = JSON.parse(text) as EnhancedArticleContent;
-    
-    // 3. Save to Memory Cache
     articleMemoryCache.set(id, content);
 
-    // 4. Save to Supabase (Async, fire and forget)
     if (isSupabaseConfigured()) {
         supabase!.from('ai_articles_cache')
             .upsert({ article_id: id, data: content }, { onConflict: 'article_id' })
-            .then(({ error }) => {
-                if (error) console.error("Failed to save article to Supabase", error);
-                else console.log(`[Supabase Saved] Article ${id}`);
-            });
+            .then(() => {});
     }
     
     return content;
 
   } catch (error) {
     console.error("Gemini Text Error:", error);
-    // Fallback logic if AI fails
     return {
       fullArticle: description + "\n\n(AI Expansion currently unavailable. Please check back later.)",
       summaryShort: description,
@@ -156,19 +133,13 @@ export const enhanceArticle = async (
   }
 };
 
-// --- Audio Generation (TTS) ---
-
 export const generateNewsAudio = async (text: string): Promise<{ audioData: string }> => {
-  // Simple hashing for cache key
   const cacheKey = btoa(unescape(encodeURIComponent(text.trim().slice(0, 100) + text.length))); 
 
-  // 1. Check Memory Cache
   if (audioMemoryCache.has(cacheKey)) {
-    console.log("[Audio Memory Cache Hit]");
     return { audioData: audioMemoryCache.get(cacheKey)! };
   }
 
-  // 2. Check Supabase Cache
   if (isSupabaseConfigured()) {
       try {
           const { data, error } = await supabase!
@@ -178,30 +149,27 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
               .single();
           
           if (data && !error) {
-              console.log("[Audio Supabase Cache Hit]");
               audioMemoryCache.set(cacheKey, data.audio_data);
               return { audioData: data.audio_data };
           }
-      } catch (e) {
-          console.warn("Supabase audio cache check failed", e);
-      }
+      } catch (e) {}
   }
 
   const aiClient = getAI();
   if (!aiClient) throw new Error("API Key not configured");
 
-  // CRITICAL FIX: Aggressive text sanitization.
   const cleanText = text
-    .replace(/https?:\/\/\S+/g, '') // Remove URLs completely
-    .replace(/[*#_`~>\[\]\(\)]/g, '') // Remove all Markdown and bracket characters
-    .replace(/\s+/g, ' ') // Collapse whitespace
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/[*#_`~>\[\]\(\)]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 
   if (!cleanText) {
       throw new Error("Audio generation failed: Text was empty after sanitization.");
   }
 
-  const speechText = cleanText.slice(0, 500);
+  // Increased limit to 2000 chars for full summary/translation reading
+  const speechText = cleanText.slice(0, 2000);
 
   try {
     const response = await aiClient.models.generateContent({
@@ -225,17 +193,12 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
         throw new Error("No audio data generated - Model may have refused content");
     }
 
-    // 3. Save to Memory Cache
     audioMemoryCache.set(cacheKey, base64Audio);
 
-    // 4. Save to Supabase (Async)
     if (isSupabaseConfigured()) {
         supabase!.from('ai_audio_cache')
             .upsert({ text_hash: cacheKey, audio_data: base64Audio }, { onConflict: 'text_hash' })
-            .then(({ error }) => {
-                if (error) console.error("Failed to save audio to Supabase", error);
-                else console.log("[Supabase Saved] Audio Cache");
-            });
+            .then(() => {});
     }
 
     return { audioData: base64Audio };

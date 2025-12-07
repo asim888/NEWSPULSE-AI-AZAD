@@ -18,10 +18,12 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-// Error Boundary Component
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  // Explicitly declare state to fix TS error 'Property state does not exist'
-  public state: ErrorBoundaryState = { hasError: false, error: null };
+  // Explicitly declare state property for TypeScript
+  public state: ErrorBoundaryState = {
+    hasError: false,
+    error: null
+  };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };

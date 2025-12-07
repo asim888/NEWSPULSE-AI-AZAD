@@ -1,11 +1,9 @@
-
 /**
  * Safe Environment Variable Access
  * Checks Vite (import.meta.env), Process (Node), and Window scopes.
  */
 export const getEnv = (key: string): string => {
     // 1. Try Vite (Best for Vercel React/Vite apps)
-    // Note: We use string access to avoid build errors if types aren't set
     try {
         // @ts-ignore
         if (import.meta && import.meta.env && import.meta.env[`VITE_${key}`]) {

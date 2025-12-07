@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Category, Article, TeamMember, UserState, EnhancedArticleContent, SubscriptionStatus, ToastMessage } from './types';
 import { APP_NAME, TAGLINE, ATTRIBUTION, FALLBACK_NEWS, LOGO_URL, TEAM, ASSET_LOGO_URL, SUBSCRIPTION_QR_URL, FALLBACK_ARTICLE_IMAGE } from './constants';
@@ -31,7 +30,13 @@ const IconStop = () => (
   </svg>
 );
 
-// Helper to decode raw PCM from Gemini (24kHz, 1 channel, 16-bit little endian)
+const IconMic = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-gold-500">
+    <path d="M8.25 4.5a3.75 3.75 0 117.5 0v8.25a3.75 3.75 0 11-7.5 0V4.5z" />
+    <path d="M6 10.5a.75.75 0 01.75.75v1.5a5.25 5.25 0 1010.5 0v-1.5a.75.75 0 011.5 0v1.5a6.751 6.751 0 01-6 6.709v2.291h3a.75.75 0 010 1.5h-7.5a.75.75 0 010-1.5h3v-2.291a6.751 6.751 0 01-6-6.709v-1.5A.75.75 0 016 10.5z" />
+  </svg>
+);
+
 const pcmToAudioBuffer = (
   data: Uint8Array,
   ctx: AudioContext,
@@ -51,9 +56,6 @@ const pcmToAudioBuffer = (
   return buffer;
 }
 
-// --- Components ---
-
-// 0. Toast Notification
 const ToastContainer = ({ toasts, removeToast }: { toasts: ToastMessage[], removeToast: (id: number) => void }) => {
     return (
         <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2">
@@ -74,7 +76,6 @@ const ToastContainer = ({ toasts, removeToast }: { toasts: ToastMessage[], remov
     );
 };
 
-// 1. Interactive Background (Fireball Cursor)
 const InteractiveBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -96,17 +97,11 @@ const InteractiveBackground = () => {
     setSize();
     window.addEventListener('resize', setSize);
 
-    // State
     const mouse = { x: width / 2, y: height / 2 };
     const ball = { x: width / 2, y: height / 2 };
 
     interface Particle {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      life: number;
-      size: number;
+      x: number; y: number; vx: number; vy: number; life: number; size: number;
     }
     const particles: Particle[] = [];
 
@@ -120,25 +115,22 @@ const InteractiveBackground = () => {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
       
-      // Move ball with easing (Smooth follow)
       ball.x += (mouse.x - ball.x) * 0.15;
       ball.y += (mouse.y - ball.y) * 0.15;
 
-      // Add new particles (Fire trail emission)
-      for(let k=0; k<3; k++) { // Reduced count
+      for(let k=0; k<3; k++) { 
           const angle = Math.random() * Math.PI * 2;
-          const r = Math.random() * 2; // Reduced spread
+          const r = Math.random() * 2; 
           particles.push({
               x: ball.x + Math.cos(angle) * r,
               y: ball.y + Math.sin(angle) * r,
-              vx: (Math.random() - 0.5) * 1, // Slower velocity
+              vx: (Math.random() - 0.5) * 1,
               vy: (Math.random() - 0.5) * 1 - 0.5,
               life: 1.0,
-              size: Math.random() * 2 + 1 // Smaller particles
+              size: Math.random() * 2 + 1 
           });
       }
 
-      // Render Particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.life -= 0.05; 
@@ -161,8 +153,7 @@ const InteractiveBackground = () => {
         ctx.fill();
       }
 
-      // Render Fireball Core - SMALLER
-      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 6); // Reduced radius
+      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 6); 
       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
       gradient.addColorStop(0.3, 'rgba(255, 215, 0, 0.6)');
       gradient.addColorStop(0.6, 'rgba(255, 69, 0, 0.2)');
@@ -170,7 +161,7 @@ const InteractiveBackground = () => {
 
       ctx.fillStyle = gradient;
       ctx.beginPath();
-      ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2); // Smaller radius (was 14)
+      ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2); 
       ctx.fill();
 
       requestAnimationFrame(animate);
@@ -194,23 +185,16 @@ const InteractiveBackground = () => {
   );
 };
 
-// 2. Welcome Screen
 const WelcomeScreen = ({ onEnter }: { onEnter: () => void }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-noir-900 via-black to-noir-800" />
-      
-      {/* Pulse Glow Effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
 
       <div className="relative z-10 flex flex-col items-center text-center p-8">
         
-        {/* Logo Container with Circle */}
         <div className="mb-10 relative group animate-fade-in">
-          {/* Outer Glow */}
           <div className="absolute inset-0 bg-gold-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000 rounded-full"></div>
-          
-          {/* Gold Ring */}
           <div className="relative p-1 rounded-full bg-gradient-to-tr from-gold-700 via-gold-500 to-gold-700 shadow-2xl">
              <div className="bg-noir-950 rounded-full p-6 border-4 border-noir-900">
                 <img src={LOGO_URL} alt="Logo" className="w-32 h-32 object-contain drop-shadow-xl" />
@@ -218,17 +202,14 @@ const WelcomeScreen = ({ onEnter }: { onEnter: () => void }) => {
           </div>
         </div>
 
-        {/* App Name */}
         <h1 className="text-5xl md:text-7xl font-serif font-bold text-gold-500 mb-2 tracking-tight drop-shadow-sm">
           {APP_NAME}
         </h1>
 
-        {/* Founders Attribution - Moved Here, Bigger & Gold */}
         <p className="text-lg md:text-2xl text-gold-400 font-serif italic mb-8 tracking-wide">
           By Abu Aimal, Aimal Akram & Azad Studio
         </p>
 
-        {/* Tagline */}
         <p className="text-gray-300 text-lg md:text-xl font-light mb-12 tracking-wide max-w-lg">
           {TAGLINE}
         </p>
@@ -247,7 +228,6 @@ const WelcomeScreen = ({ onEnter }: { onEnter: () => void }) => {
   );
 };
 
-// 3. Premium Modal
 const PremiumModal = ({ onClose, onTrialStart, onPaymentComplete }: { onClose: () => void; onTrialStart: () => void; onPaymentComplete: () => void }) => {
   const [showQr, setShowQr] = useState(false);
 
@@ -331,7 +311,6 @@ const PremiumModal = ({ onClose, onTrialStart, onPaymentComplete }: { onClose: (
   );
 };
 
-// 4. Article View Modal (AI & TTS)
 interface ArticleModalProps {
   article: Article;
   onClose: () => void;
@@ -452,7 +431,6 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
         const utterance = new SpeechSynthesisUtterance(textToRead);
         utterance.lang = lang;
         utterance.rate = 0.9;
-        
         utterance.text = textToRead.replace(/[*#_]/g, '');
 
         utterance.onend = () => setPlaying(false);
@@ -474,42 +452,11 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
 
   useEffect(() => {
     return () => {
-      if (audioSourceRef.current) {
-        audioSourceRef.current.stop();
-      }
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
+      if (audioSourceRef.current) audioSourceRef.current.stop();
+      if (audioContextRef.current) audioContextRef.current.close();
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     };
   }, []);
-
-  const getTabLabel = (tab: string) => {
-      switch(tab) {
-          case 'original': return 'English (Full Article)';
-          case 'summary': return 'AI Summary (English)';
-          case 'roman': return 'Roman Urdu';
-          case 'urdu': return 'Urdu (اردو)';
-          case 'hindi': return 'Hindi (हिंदी)';
-          case 'telugu': return 'Telugu (తెలుగు)';
-          default: return tab;
-      }
-  }
-  
-  const getListenButtonText = () => {
-    if (audioLoading) return "";
-    if (playing) return "Stop Audio";
-    
-    switch(activeTab) {
-      case 'original': return 'Listen to Story';
-      case 'summary': return 'Listen to Summary';
-      case 'roman': return 'Listen (Roman Urdu)';
-      case 'urdu': return 'Listen (Urdu)';
-      case 'hindi': return 'Listen (Hindi)';
-      case 'telugu': return 'Listen (Telugu)';
-      default: return 'Listen';
-    }
-  }
 
   const getFontClass = () => {
       if (activeTab === 'urdu') return 'font-serif leading-loose text-right text-xl'; 
@@ -539,7 +486,6 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
              <span>{article.timestamp}</span>
            </div>
 
-           {/* Language Selection Dropdown */}
            <div className="relative mb-6">
               <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-2 block">Select Language / Format</label>
               <div className="relative">
@@ -578,12 +524,6 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
                  {getContent()}
                </div>
              )}
-             
-             {loading && !enhancedContent?.fullArticle && (
-                <div className="mt-8 flex justify-center">
-                    <span className="text-xs text-gold-600 animate-pulse">Enhancing & Translating...</span>
-                </div>
-             )}
            </div>
         </div>
 
@@ -594,18 +534,18 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
           <button 
             disabled={audioLoading}
             onClick={handlePlayAudio}
-            className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all w-full md:w-auto justify-center ${
+            className={`flex items-center gap-2 px-6 py-2 rounded-full font-bold transition-all w-full md:w-auto justify-center text-sm border ${
               playing 
-                ? 'bg-red-900/50 text-red-400 border border-red-800 hover:bg-red-900' 
-                : 'bg-gold-500 text-black hover:bg-gold-400 shadow-lg shadow-gold-500/20'
+                ? 'bg-zinc-900 text-red-400 border-red-800 hover:border-red-600' 
+                : 'bg-zinc-900 text-gold-500 border-gold-600 hover:bg-gold-600/10 shadow-lg shadow-gold-500/10'
             } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {audioLoading ? (
-              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full"></span>
+              <span className="animate-spin h-4 w-4 border-2 border-gold-500 border-t-transparent rounded-full"></span>
             ) : (
               <>
-                 {playing ? <IconStop /> : <IconPlay />} 
-                 {getListenButtonText()}
+                 {playing ? <IconStop /> : <IconMic />} 
+                 {playing ? "Stop Audio" : "Listen"}
               </>
             )}
           </button>
@@ -632,30 +572,24 @@ export default function App() {
   const [breakingHeadlines, setBreakingHeadlines] = useState<string[]>([]);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  // Toast Helper
   const addToast = (title: string, message: string, type: 'success' | 'info' | 'warning' = 'info') => {
       const id = Date.now();
       setToasts(prev => [...prev, { id, title, message, type }]);
       setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 5000);
   };
 
-  // Smart Subscription Logic (Load & Check)
   useEffect(() => {
       const savedSub = localStorage.getItem('subscription_status');
       if (savedSub) {
           const parsed: SubscriptionStatus = JSON.parse(savedSub);
-          
-          // Check for Expiry
           if (parsed.expiry && parsed.expiry < Date.now()) {
              if (parsed.autoRenew) {
-                 // Simulate Auto-Renewal
-                 const newExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000); // +30 Days
+                 const newExpiry = Date.now() + (30 * 24 * 60 * 60 * 1000); 
                  const renewedSub: SubscriptionStatus = { ...parsed, expiry: newExpiry };
                  setSubscription(renewedSub);
                  localStorage.setItem('subscription_status', JSON.stringify(renewedSub));
                  addToast("Subscription Renewed", "Your Premium access has been auto-renewed for another month.", "success");
              } else {
-                 // Expire Trial/Sub
                  const expiredSub: SubscriptionStatus = { plan: 'free', expiry: null, autoRenew: false };
                  setSubscription(expiredSub);
                  localStorage.setItem('subscription_status', JSON.stringify(expiredSub));
@@ -670,7 +604,6 @@ export default function App() {
   const handleEnter = () => {
     setHasEntered(true);
     if ('speechSynthesis' in window) {
-      // Enhanced pronunciation: "A. I." spaced out, "Azaad" phonetic spelling for Indian accent.
       const msg = new SpeechSynthesisUtterance("Welcome to News Pulse A. I. by Azaad Studio. Bringing you news in your language, anytime, anywhere.");
       msg.lang = 'en-IN';
       msg.rate = 0.9;
@@ -678,9 +611,8 @@ export default function App() {
     }
   };
 
-  // Subscription Actions
   const startTrial = () => {
-      const expiry = Date.now() + (3 * 24 * 60 * 60 * 1000); // 3 Days
+      const expiry = Date.now() + (3 * 24 * 60 * 60 * 1000); 
       const newSub: SubscriptionStatus = { plan: 'trial', expiry, autoRenew: false };
       setSubscription(newSub);
       localStorage.setItem('subscription_status', JSON.stringify(newSub));
@@ -689,7 +621,7 @@ export default function App() {
   };
 
   const completePayment = () => {
-      const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000); // 30 Days
+      const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000); 
       const newSub: SubscriptionStatus = { plan: 'premium', expiry, autoRenew: true };
       setSubscription(newSub);
       localStorage.setItem('subscription_status', JSON.stringify(newSub));
@@ -710,8 +642,6 @@ export default function App() {
 
   useEffect(() => {
      if (currentCategory === Category.AZAD_STUDIO) {
-        // Optimization: Studio Updates sidebar removed, so we don't need to fetch RSS news items for this view anymore.
-        // We clear newsItems to save state/rendering, as the user only sees the Telegram Iframe.
         setNewsItems([]); 
         setLoadingNews(false);
         return;
@@ -731,11 +661,9 @@ export default function App() {
             if (fetchedArticles.length > 0) {
                 setNewsItems(fetchedArticles);
             } else {
-                console.log("Using Fallback News for", currentCategory);
                 setNewsItems(FALLBACK_NEWS.filter(n => n.category === currentCategory));
             }
         } catch (e) {
-            console.error("Error loading news", e);
             setNewsItems(FALLBACK_NEWS.filter(n => n.category === currentCategory));
         } finally {
             setLoadingNews(false);
@@ -745,11 +673,9 @@ export default function App() {
      loadNews();
   }, [currentCategory]);
 
-  // Breaking News (Auto Update every 60s)
   useEffect(() => {
     const loadBreaking = async () => {
         try {
-            // Fetch breaking news from ALL categories to make it comprehensive
             const categoriesToFetch = [
                 Category.HYDERABAD,
                 Category.TELANGANA,
@@ -759,15 +685,12 @@ export default function App() {
                 Category.AZAD_STUDIO
             ];
             
-            // Fetch all in parallel
             const results = await Promise.all(
                 categoriesToFetch.map(cat => RssService.fetchNewsForCategory(cat))
             );
             
-            // Extract top headlines from each section
             const headlines: string[] = [];
             results.forEach((articles) => {
-                // Take top 3 from each category
                 articles.slice(0, 3).forEach(a => {
                     if (a.title && !headlines.includes(a.title)) {
                         headlines.push(a.title);
@@ -783,11 +706,8 @@ export default function App() {
         }
     }
     
-    // Initial load
     loadBreaking();
-
-    // Auto-update polling
-    const interval = setInterval(loadBreaking, 60000); // 60s
+    const interval = setInterval(loadBreaking, 60000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -822,16 +742,25 @@ export default function App() {
           </button>
         </div>
         
-        <div className="bg-gradient-to-r from-[#3E2723] via-[#5D4037] to-[#3E2723] text-white text-xs font-bold py-1 overflow-hidden relative whitespace-nowrap flex border-y border-gold-600/30 shadow-lg z-20">
-           <div className="animate-marquee inline-block px-4">
-             {breakingHeadlines.length > 0 ? (
-                <>
-                    BREAKING NEWS: {breakingHeadlines.join(" • ")} • {breakingHeadlines.join(" • ")}
-                </>
-             ) : (
-                 "BREAKING NEWS: Hyderabad Metro Phase 2 Approved • ISRO Launches New Solar Probe • India Wins Cricket Series Against Australia • Azad Studio Releases 'Voices of the Silent' • Sensex Hits All-Time High • Telangana Govt Announces New AI Policy • Global Climate Summit Reaches Historic Agreement • World Cup 2026 Schedule Released •"
-             )}
-           </div>
+        <div className="relative border-y border-gold-600/30 shadow-lg z-20 h-8 bg-gradient-to-r from-[#2A1E18] via-[#3E2723] to-[#2A1E18] flex items-center">
+            {/* Static Label (Absolute Left) */}
+            <div className="absolute left-0 top-0 bottom-0 z-20 flex items-center px-4 bg-[#3E2723] shadow-[4px_0_10px_rgba(0,0,0,0.5)]">
+                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2"></div>
+                 <span className="text-white text-xs font-bold whitespace-nowrap">BREAKING NEWS</span>
+            </div>
+
+            {/* Scrolling Content (Padded Left) */}
+            <div className="flex-1 overflow-hidden pl-36">
+                <div className="animate-marquee inline-block whitespace-nowrap text-white text-xs font-bold">
+                    {breakingHeadlines.length > 0 ? (
+                        <>
+                            {breakingHeadlines.join(" • ")} • {breakingHeadlines.join(" • ")}
+                        </>
+                    ) : (
+                        "Hyderabad Metro Phase 2 Approved • ISRO Launches New Solar Probe • India Wins Cricket Series Against Australia • Azad Studio Releases 'Voices of the Silent' • Sensex Hits All-Time High • Telangana Govt Announces New AI Policy • Global Climate Summit Reaches Historic Agreement • World Cup 2026 Schedule Released •"
+                    )}
+                </div>
+            </div>
         </div>
       </header>
 
@@ -892,7 +821,6 @@ export default function App() {
                 <div className="w-24 h-1 bg-gold-600 mx-auto rounded-full"></div>
              </div>
 
-             {/* Founders Profiles (Photos & Bios) - FIRST */}
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {TEAM.map((founder, idx) => (
                    <div key={founder.name} className="bg-black border border-zinc-800 rounded-3xl overflow-hidden hover:border-gold-600 hover:shadow-[0_0_30px_rgba(170,140,44,0.2)] transition-all duration-500 group">
@@ -930,7 +858,6 @@ export default function App() {
                 ))}
              </div>
 
-             {/* Mission & Vision Details - SECOND */}
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-noir-900 border border-zinc-800 p-8 rounded-2xl relative overflow-hidden group hover:border-gold-600/30 transition-all">
                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -1062,9 +989,6 @@ export default function App() {
                <h4 className="text-gold-500 font-bold uppercase tracking-wider text-sm border-b border-zinc-800 pb-2 inline-block md:block">Our Vision</h4>
                <p className="text-sm text-gray-400 leading-relaxed">
                  To create a world where language is no longer a barrier to accessing information. We combine cutting-edge AI technology with journalism to deliver news in your preferred language, making global events accessible to everyone.
-               </p>
-               <p className="text-sm text-gray-500 leading-relaxed italic">
-                 "We believe that everyone deserves access to quality journalism in their native language."
                </p>
             </div>
 

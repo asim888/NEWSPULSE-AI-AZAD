@@ -1,10 +1,10 @@
-
 import { Category, Article } from '../types';
 import { RSS_FEEDS } from '../constants';
 import { supabase, isSupabaseConfigured } from './supabaseClient';
 
 const CACHE_PREFIX = 'news_pulse_cache_';
-const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 hours
+// Cache set to 30 mins for faster breaking news updates
+const CACHE_DURATION = 30 * 60 * 1000; 
 
 // Helper to generate a stable ID
 const generateId = (str: string) => {
@@ -19,7 +19,7 @@ const generateId = (str: string) => {
 
 export const fetchNewsForCategory = async (category: Category): Promise<Article[]> => {
     
-    // --- AZAD STUDIO (Special Case: Fetch from Supabase Telegram Table) ---
+    // --- AZAD STUDIO (Fetch from Supabase Telegram Table) ---
     if (category === Category.AZAD_STUDIO) {
         if (isSupabaseConfigured()) {
             try {
@@ -39,7 +39,7 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
                         category: Category.AZAD_STUDIO,
                         url: '#',
                         imageUrl: post.media_url,
-                        descriptionRomanUrdu: post.message // Assuming posts might already be mixed
+                        descriptionRomanUrdu: post.message
                     }));
                 }
             } catch (e) {
@@ -51,8 +51,7 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
 
     // --- STANDARD RSS CATEGORIES ---
 
-    // 1. GLOBAL CACHE (Supabase) - "Save Once, Use For All"
-    // This allows User B to benefit from the fetch performed by User A.
+    // 1. GLOBAL CACHE (Supabase)
     if (isSupabaseConfigured()) {
         try {
             const { data, error } = await supabase!
@@ -66,7 +65,6 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
                 const isFresh = (Date.now() - lastUpdate) < CACHE_DURATION;
                 
                 if (isFresh && data.articles && data.articles.length > 0) {
-                    console.log(`[Supabase RSS] Serving global cache for ${category}`);
                     return data.articles;
                 }
             }
@@ -75,8 +73,7 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
         }
     }
 
-    // 2. Local Fallback Cache (Browser)
-    // Used if Supabase is unreachable or empty, before trying expensive proxies.
+    // 2. Local Fallback Cache
     const cacheKey = CACHE_PREFIX + category;
     const cachedData = localStorage.getItem(cacheKey);
     let cachedArticles: Article[] = [];
@@ -85,7 +82,6 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
         try {
             const parsed = JSON.parse(cachedData);
             if (Date.now() - parsed.timestamp < CACHE_DURATION) {
-                console.log(`[Local RSS] Serving local cache for ${category}`);
                 return parsed.articles;
             }
             cachedArticles = parsed.articles; // Keep as stale fallback
@@ -109,7 +105,7 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
         for (const proxy of proxies) {
             try {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+                const timeoutId = setTimeout(() => controller.abort(), 8000); 
 
                 const response = await fetch(proxy.url, { signal: controller.signal });
                 clearTimeout(timeoutId);
@@ -174,7 +170,6 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
     const results = await Promise.all(fetchPromises);
     const allArticles = results.flat();
 
-    // Deduplication
     const seenTitles = new Set();
     const uniqueArticles = allArticles.filter(article => {
         const normalizedTitle = article.title.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -184,13 +179,11 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
     });
 
     if (uniqueArticles.length > 0) {
-        // A. Save to LocalStorage (Immediate L1)
         localStorage.setItem(cacheKey, JSON.stringify({
             timestamp: Date.now(),
             articles: uniqueArticles
         }));
 
-        // B. Save to Supabase (Global L2)
         if (isSupabaseConfigured()) {
             supabase!.from('rss_feed_cache')
                 .upsert({ 
@@ -199,17 +192,14 @@ export const fetchNewsForCategory = async (category: Category): Promise<Article[
                     updated_at: new Date().toISOString()
                 }, { onConflict: 'category' })
                 .then(({ error }) => {
-                    if (error) console.error(`[Supabase RSS] Failed to update global cache for ${category}`, error);
-                    else console.log(`[Supabase RSS] Global cache updated for ${category}`);
+                    if (error) console.error(`[Supabase RSS] Failed update`, error);
                 });
         }
 
         return uniqueArticles;
     }
 
-    // 4. Fallback to Stale Local Cache if Network Fails
     if (cachedArticles.length > 0) {
-        console.warn(`[RSS] Network failed, using stale cache for ${category}`);
         return cachedArticles;
     }
 

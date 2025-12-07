@@ -7,6 +7,7 @@ export const FALLBACK_ARTICLE_IMAGE = "https://i.postimg.cc/hj1513Lj/c467305d-10
 export const IMAGE_ABU_AIMAL = "https://i.postimg.cc/KvskFffK/Abu_Aimal.jpg";
 export const IMAGE_AIMAL_AKRAM = "https://i.postimg.cc/7Z264kfr/Aimal_Akram.jpg";
 export const SUBSCRIPTION_QR_URL = "https://i.postimg.cc/Dfjhmvgg/90bb0209-8fee-4249-b708-6eeb97e05570.jpg";
+export const PRODUCTION_URL = "https://newspulseaiazad.vercel.app";
 
 export const APP_NAME = "News Pulse AI";
 export const TAGLINE = "Breaking language barriers with AI-powered news translation and text-to-speech.";
@@ -29,8 +30,8 @@ export const TEAM: TeamMember[] = [
 
 // Expanded RSS Feed Sources
 export const RSS_FEEDS: Record<Category, string[]> = {
-  [Category.AZAD_STUDIO]: [], // Handled separately via static data or Telegram
-  [Category.FOUNDERS]: [],    // Handled separately as a static page
+  [Category.AZAD_STUDIO]: [],
+  [Category.FOUNDERS]: [], 
   [Category.HYDERABAD]: [
     'https://www.thehindu.com/news/cities/Hyderabad/feeder/default.rss',
     'https://telanganatoday.com/hyderabad/feed',
@@ -60,8 +61,6 @@ export const RSS_FEEDS: Record<Category, string[]> = {
   ]
 };
 
-// Fallback/Initial Data to simulate "Smart Fetching" from DB/RSS
-// DUPLICATED AND VARIED TO ENSURE 10 ITEMS PER SECTION
 const generateFallback = (prefix: string, cat: Category, baseTitle: string, count: number) => {
     return Array.from({length: count}).map((_, i) => ({
         id: `${prefix}${i+1}`,
@@ -93,43 +92,7 @@ export const FALLBACK_NEWS: Article[] = [
     url: '#',
     imageUrl: 'https://picsum.photos/800/600?random=1'
   },
-  {
-    id: 'h2',
-    title: 'Traffic Restrictions in Jubilee Hills Today',
-    source: 'Siasat',
-    timestamp: '4 hours ago',
-    description: 'Hyderabad Traffic Police have issued an advisory regarding traffic diversions in Jubilee Hills due to ongoing flyover construction work.',
-    summaryShort: 'Traffic diversions announced in Jubilee Hills for flyover construction. Commuters advised to take alternate routes to avoid congestion.',
-    descriptionRomanUrdu: 'Hyderabad Traffic Police ne Jubilee Hills mein flyover ki tameer ki wajah se traffic ke rukh modne ke hawalay se advisory jari ki hai.',
-    category: Category.HYDERABAD,
-    url: '#',
-    imageUrl: 'https://picsum.photos/800/600?random=12'
-  },
-  {
-    id: 'h3',
-    title: 'Historic Charminar Restoration Begins',
-    source: 'Deccan Chronicle',
-    timestamp: '6 hours ago',
-    description: 'The Archaeological Survey of India (ASI) has commenced a major restoration project to preserve the intricate stucco work of the Charminar.',
-    summaryShort: 'ASI begins major restoration of Charminar to preserve its historic stucco work. The project aims to protect the monument for future generations.',
-    descriptionRomanUrdu: 'Archaeological Survey of India ne Charminar ke naqsh-o-nigaar ko mehfooz rakhne ke liye ek bada bahali ka kaam shuru kiya hai.',
-    category: Category.HYDERABAD,
-    url: '#',
-    imageUrl: 'https://picsum.photos/800/600?random=13'
-  },
-  {
-    id: 'h4',
-    title: 'New IT Park Announced for Kompally',
-    source: 'Telangana Today',
-    timestamp: '8 hours ago',
-    description: 'To decentralize the IT sector, the government has announced a new IT park in Kompally, expected to generate 50,000 jobs.',
-    summaryShort: 'Government announces new IT park in Kompally to decentralize growth. The project is expected to create 50,000 new jobs in North Hyderabad.',
-    descriptionRomanUrdu: 'IT sector ko phelaane ke liye, hukumat ne Kompally mein naye IT park ka elaan kiya hai, jis se 50,000 naukriyan paida hone ki umeed hai.',
-    category: Category.HYDERABAD,
-    url: '#',
-    imageUrl: 'https://picsum.photos/800/600?random=14'
-  },
-  ...generateFallback('h_extra_', Category.HYDERABAD, 'Local Hyderabad News', 6),
+  ...generateFallback('h_extra_', Category.HYDERABAD, 'Local Hyderabad News', 9),
 
   // --- TELANGANA ---
   {
@@ -147,19 +110,7 @@ export const FALLBACK_NEWS: Article[] = [
     url: '#',
     imageUrl: 'https://picsum.photos/800/600?random=2'
   },
-  {
-    id: 't2',
-    title: 'Farmers Receive Rythu Bandhu Aid',
-    source: 'The Hindu',
-    timestamp: '1 day ago',
-    description: 'The state government has released the latest installment of Rythu Bandhu investment support to over 60 lakh farmers across the state.',
-    summaryShort: 'Rythu Bandhu funds released to 60 lakh farmers. The scheme provides investment support for the upcoming agricultural season.',
-    descriptionRomanUrdu: 'Riyasati hukumat ne Rythu Bandhu ki taza qist 60 lakh se zayed kisanon ke liye jari kar di hai.',
-    category: Category.TELANGANA,
-    url: '#',
-    imageUrl: 'https://picsum.photos/800/600?random=22'
-  },
-  ...generateFallback('t_extra_', Category.TELANGANA, 'State Development Update', 8),
+  ...generateFallback('t_extra_', Category.TELANGANA, 'State Development Update', 9),
 
   // --- INDIA ---
   {
@@ -177,19 +128,7 @@ export const FALLBACK_NEWS: Article[] = [
     url: '#',
     imageUrl: 'https://picsum.photos/800/600?random=3'
   },
-  {
-    id: 'i2',
-    title: 'Digital Rupee Pilot Expands',
-    source: 'Times of India',
-    timestamp: '5 hours ago',
-    description: 'RBI announces the expansion of the Digital Rupee pilot project to five more cities, aiming to modernize payment systems.',
-    summaryShort: 'RBI expands Digital Rupee pilot to 5 more cities. The move aims to test the currency in wider retail scenarios.',
-    descriptionRomanUrdu: 'RBI ne Digital Rupee pilot project ko mazeed paanch shehron tak phelane ka elaan kiya hai.',
-    category: Category.INDIA,
-    url: '#',
-    imageUrl: 'https://picsum.photos/800/600?random=32'
-  },
-  ...generateFallback('i_extra_', Category.INDIA, 'National News Brief', 8),
+  ...generateFallback('i_extra_', Category.INDIA, 'National News Brief', 9),
 
   // --- INTERNATIONAL ---
   {
@@ -236,9 +175,6 @@ export const FALLBACK_NEWS: Article[] = [
     description: 'Our latest documentary "Voices of the Silent" premieres this Friday. Join us for the live screening event.',
     summaryShort: 'Azad Studio premieres "Voices of the Silent" documentary this Friday. Join the live screening to witness this impactful story.',
     descriptionRomanUrdu: 'Hamari nayi documentary "Voices of the Silent" is Jumay ko release ho rahi hai. Live screening event mein humare saath shamil hon.',
-    descriptionUrdu: 'ہماری نئی دستاویزی فلم "وائسز آف دی سائلنٹ" اس جمعہ کو ریلیز ہو رہی ہے۔ لائیو اسکریننگ ایونٹ میں ہمارے ساتھ شامل ہوں۔',
-    descriptionHindi: 'हमारी नवीनतम वृत्तचित्र "वॉयस ऑफ द साइलेंट" इस शुक्रवार को रिलीज हो रही है। लाइव स्क्रीनिंग इवेंट में हमारे साथ शामिल हों।',
-    descriptionTelugu: 'మా తాజా డాక్యుమెంటరీ "వాయిస్ ఆఫ్ ది సైలెంట్" ఈ శుక్రవారం ప్రీమియర్ అవుతుంది. లైవ్ స్క్రీనింగ్ ఈవెంట్ కోసం మాతో చేరండి.',
     category: Category.AZAD_STUDIO,
     url: '#',
     imageUrl: ASSET_LOGO_URL

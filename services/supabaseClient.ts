@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import { getEnv } from '../utils/env';
 
@@ -20,19 +19,19 @@ export const isSupabaseConfigured = () => {
 export interface TelegramPost {
     id: number;
     message: string;
-    media_url?: string; // Optional image/video
+    media_url?: string;
     created_at: string;
     views?: number;
 }
 
 export interface AiArticleCache {
-    article_id: string; // Hashed ID
-    data: any; // JSON content (EnhancedArticleContent)
+    article_id: string;
+    data: any;
     created_at?: string;
 }
 
 export interface AiAudioCache {
     text_hash: string;
-    audio_data: string; // Base64
+    audio_data: string;
     created_at?: string;
 }

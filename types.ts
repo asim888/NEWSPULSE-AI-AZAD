@@ -1,4 +1,3 @@
-
 export enum Category {
   AZAD_STUDIO = 'Azad Studio',
   HYDERABAD = 'Hyderabad',
@@ -15,13 +14,13 @@ export interface Article {
   source: string;
   timestamp: string;
   imageUrl?: string;
-  description: string; // The short RSS snippet
-  summaryShort?: string; // AI Summary (Pre-calculated or cached)
-  descriptionRomanUrdu?: string; // The short RSS snippet in Roman Urdu
-  descriptionUrdu?: string; // The short RSS snippet in Urdu Script
-  descriptionHindi?: string; // The short RSS snippet in Hindi
-  descriptionTelugu?: string; // The short RSS snippet in Telugu
-  content?: string; // The full content (fetched or AI generated)
+  description: string;
+  summaryShort?: string;
+  descriptionRomanUrdu?: string;
+  descriptionUrdu?: string;
+  descriptionHindi?: string;
+  descriptionTelugu?: string;
+  content?: string;
   category: Category;
   url: string;
 }
@@ -33,7 +32,6 @@ export interface EnhancedArticleContent {
   summaryUrdu: string;
   summaryHindi: string;
   summaryTelugu: string;
-  // Full translations
   fullArticleRomanUrdu?: string;
   fullArticleUrdu?: string;
   fullArticleHindi?: string;
@@ -50,14 +48,14 @@ export interface TeamMember {
 export interface UserState {
   hasEntered: boolean;
   isPremium: boolean;
-  viewedArticles: string[]; // IDs of articles viewed
+  viewedArticles: string[];
 }
 
 export type SubscriptionPlan = 'free' | 'trial' | 'premium';
 
 export interface SubscriptionStatus {
     plan: SubscriptionPlan;
-    expiry: number | null; // Timestamp
+    expiry: number | null;
     autoRenew: boolean;
 }
 
