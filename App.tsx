@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Category, Article, TeamMember, UserState, EnhancedArticleContent, SubscriptionStatus, ToastMessage } from './types';
-import { APP_NAME, TAGLINE, ATTRIBUTION, FALLBACK_NEWS, LOGO_URL, TEAM, ASSET_LOGO_URL, SUBSCRIPTION_QR_URL } from './constants';
+import { APP_NAME, TAGLINE, ATTRIBUTION, FALLBACK_NEWS, LOGO_URL, TEAM, ASSET_LOGO_URL, SUBSCRIPTION_QR_URL, FALLBACK_ARTICLE_IMAGE } from './constants';
 import * as GeminiService from './services/geminiService';
 import * as RssService from './services/rssService';
 import { getEnv } from './utils/env';
@@ -162,7 +161,7 @@ const InteractiveBackground = () => {
       }
 
       // Render Fireball Core - SMALLER
-      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 12);
+      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 8); // Reduced radius
       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
       gradient.addColorStop(0.3, 'rgba(255, 215, 0, 0.6)');
       gradient.addColorStop(0.6, 'rgba(255, 69, 0, 0.2)');
@@ -170,7 +169,7 @@ const InteractiveBackground = () => {
 
       ctx.fillStyle = gradient;
       ctx.beginPath();
-      ctx.arc(ball.x, ball.y, 14, 0, Math.PI * 2); // Smaller radius (was 30)
+      ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2); // Smaller radius (was 14)
       ctx.fill();
 
       requestAnimationFrame(animate);
@@ -486,8 +485,8 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
 
   const getTabLabel = (tab: string) => {
       switch(tab) {
-          case 'original': return 'English (Full)';
-          case 'summary': return 'AI Summary';
+          case 'original': return 'English (Full Article)';
+          case 'summary': return 'AI Summary (English)';
           case 'roman': return 'Roman Urdu';
           case 'urdu': return 'Urdu (اردو)';
           case 'hindi': return 'Hindi (हिंदी)';
@@ -539,20 +538,26 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
              <span>{article.timestamp}</span>
            </div>
 
-           <div className="flex gap-2 mb-6 border-b border-zinc-800 pb-1 overflow-x-auto no-scrollbar">
-             {(['original', 'summary', 'roman', 'urdu', 'hindi', 'telugu'] as const).map(tab => (
-               <button
-                 key={tab}
-                 onClick={() => setActiveTab(tab)}
-                 className={`px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap shrink-0 ${
-                   activeTab === tab 
-                   ? 'text-gold-500 border-b-2 border-gold-500' 
-                   : 'text-gray-500 hover:text-gray-300'
-                 }`}
-               >
-                 {getTabLabel(tab)}
-               </button>
-             ))}
+           {/* Language Selection Dropdown */}
+           <div className="relative mb-6">
+              <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-2 block">Select Language / Format</label>
+              <div className="relative">
+                <select
+                    value={activeTab}
+                    onChange={(e) => setActiveTab(e.target.value as any)}
+                    className="w-full bg-zinc-900 border border-zinc-700 text-white text-sm rounded-lg focus:ring-gold-500 focus:border-gold-500 block p-3 appearance-none cursor-pointer hover:border-gold-600/50 transition-colors"
+                >
+                    <option value="original">English (Full Article)</option>
+                    <option value="summary">AI Summary (English)</option>
+                    <option value="roman">Roman Urdu</option>
+                    <option value="urdu">Urdu (اردو)</option>
+                    <option value="hindi">Hindi (हिंदी)</option>
+                    <option value="telugu">Telugu (తెలుగు)</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gold-500">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
+              </div>
            </div>
 
            <div className="prose prose-invert prose-amber max-w-none min-h-[200px]">
@@ -968,10 +973,10 @@ export default function App() {
                     >
                         <div className="relative h-36 overflow-hidden bg-black">
                             <img 
-                                src={article.imageUrl || LOGO_URL} 
+                                src={article.imageUrl || FALLBACK_ARTICLE_IMAGE} 
                                 alt={article.title}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
-                                onError={(e) => { (e.target as HTMLImageElement).src = LOGO_URL; }} 
+                                onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_ARTICLE_IMAGE; }} 
                             />
                             <div className="absolute top-2 right-2 bg-black/70 backdrop-blur text-white text-[10px] px-2 py-1 rounded border border-white/10">
                                 {article.category}

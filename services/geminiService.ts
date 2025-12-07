@@ -9,13 +9,9 @@ let ai: GoogleGenAI | null = null;
 
 const getAI = () => {
   if (!ai) {
-    // Guidelines strict requirement: Use API Key from env.
-    // We use getEnv to support both Vite (import.meta) and Process envs.
-    const apiKey = getEnv('API_KEY');
-    if (apiKey) {
-        ai = new GoogleGenAI({ apiKey: apiKey });
-    } else {
-        console.error("API_KEY is missing. Please set VITE_API_KEY in your environment variables.");
+    const key = getEnv('API_KEY');
+    if (key) {
+        ai = new GoogleGenAI({ apiKey: key });
     }
   }
   return ai;
@@ -194,12 +190,10 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
   const aiClient = getAI();
   if (!aiClient) throw new Error("API Key not configured");
 
-  // CRITICAL FIX: Aggressive text sanitization but keep non-English chars.
-  // We allow periods, commas, question marks, and any alphanumeric character (including Unicode)
-  // We strip URLs and Markdown.
+  // CRITICAL FIX: Aggressive text sanitization.
   const cleanText = text
     .replace(/https?:\/\/\S+/g, '') // Remove URLs completely
-    .replace(/[*#_`~>\[\]\(\)]/g, '') // Remove Markdown syntax
+    .replace(/[*#_`~>\[\]\(\)]/g, '') // Remove all Markdown and bracket characters
     .replace(/\s+/g, ' ') // Collapse whitespace
     .trim();
 
@@ -207,8 +201,7 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
       throw new Error("Audio generation failed: Text was empty after sanitization.");
   }
 
-  // Increased limit to 2000 to allow "Full Summary" and "Translated Article" reading
-  const speechText = cleanText.slice(0, 2000);
+  const speechText = cleanText.slice(0, 500);
 
   try {
     const response = await aiClient.models.generateContent({

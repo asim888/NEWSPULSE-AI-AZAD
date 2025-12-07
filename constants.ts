@@ -1,9 +1,9 @@
-
 import { Category, Article, TeamMember } from './types';
 
 // Images
 export const LOGO_URL = "https://i.postimg.cc/9FT5FFtX/logo.png";
 export const ASSET_LOGO_URL = "https://i.postimg.cc/JzFKvjvF/assets.png";
+export const FALLBACK_ARTICLE_IMAGE = "https://i.postimg.cc/hj1513Lj/c467305d-1093-458d-8281-26769fe9af73.jpg";
 export const IMAGE_ABU_AIMAL = "https://i.postimg.cc/KvskFffK/Abu_Aimal.jpg";
 export const IMAGE_AIMAL_AKRAM = "https://i.postimg.cc/7Z264kfr/Aimal_Akram.jpg";
 export const SUBSCRIPTION_QR_URL = "https://i.postimg.cc/Dfjhmvgg/90bb0209-8fee-4249-b708-6eeb97e05570.jpg";

@@ -1,7 +1,6 @@
-import React, { ReactNode, ErrorInfo } from 'react';
+import React, { ReactNode, Component, ErrorInfo } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css'; // Import Tailwind Styles
 
 // Polyfill Process for Browser/Vite Environment to prevent crashes
 // @ts-ignore
@@ -20,16 +19,9 @@ interface ErrorBoundaryState {
 }
 
 // Error Boundary Component
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  // Define state property explicitly
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  // Explicitly declare state to fix TS error 'Property state does not exist'
   public state: ErrorBoundaryState = { hasError: false, error: null };
-  // Define props property explicitly (read-only) to satisfy TS
-  public readonly props: Readonly<ErrorBoundaryProps>;
-
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.props = props;
-  }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
