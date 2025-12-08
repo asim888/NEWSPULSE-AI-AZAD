@@ -1,3 +1,4 @@
+
 import { Category, Article, TeamMember } from './types';
 
 // Images
@@ -31,7 +32,8 @@ export const TEAM: TeamMember[] = [
 // Expanded RSS Feed Sources
 export const RSS_FEEDS: Record<Category, string[]> = {
   [Category.AZAD_STUDIO]: [],
-  [Category.FOUNDERS]: [], 
+  [Category.FOUNDERS]: [],
+  [Category.GALLERY]: [],
   [Category.HYDERABAD]: [
     'https://www.thehindu.com/news/cities/Hyderabad/feeder/default.rss',
     'https://telanganatoday.com/hyderabad/feed',
@@ -40,19 +42,23 @@ export const RSS_FEEDS: Record<Category, string[]> = {
   [Category.TELANGANA]: [
     'https://www.thehindu.com/news/telangana/feeder/default.rss',
     'https://telanganatoday.com/telangana/feed',
-    'https://www.siasat.com/telangana/feed/'
+    'https://www.siasat.com/telangana/feed/',
+    'https://www.deccanchronicle.com/rss_feed/2.xml'
   ],
   [Category.INDIA]: [
     'https://www.ndtv.com/news/national/feeder/default.rss',
     'https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms',
     'https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml',
-    'https://www.tribuneindia.com/rss/feed/nation'
+    'https://www.tribuneindia.com/rss/feed/nation',
+    'https://www.deccanchronicle.com/rss_feed/15.xml',
+    'https://indianexpress.com/section/india/feed/'
   ],
   [Category.INTERNATIONAL]: [
     'https://www.ndtv.com/news/international/feeder/default.rss',
     'https://feeds.bbci.co.uk/news/world/rss.xml',
     'https://www.aljazeera.com/xml/rss/all.xml',
-    'https://www.theguardian.com/world/rss'
+    'https://www.theguardian.com/world/rss',
+    'http://rss.cnn.com/rss/edition_world.rss'
   ],
   [Category.SPORTS]: [
     'https://www.thehindu.com/sport/feeder/default.rss',
@@ -74,6 +80,49 @@ const generateFallback = (prefix: string, cat: Category, baseTitle: string, coun
         imageUrl: `https://picsum.photos/800/600?random=${Math.floor(Math.random() * 1000)}`
     }));
 };
+
+export const FALLBACK_GALLERY_POSTS: Article[] = [
+    {
+        id: 'gal1',
+        title: 'Community Outreach Event',
+        source: 'Azad Gallery',
+        timestamp: 'Yesterday',
+        description: 'Snapshots from our recent community drive in Hyderabad.',
+        category: Category.GALLERY,
+        url: '#',
+        imageUrl: 'https://picsum.photos/600/800?random=101'
+    },
+    {
+        id: 'gal2',
+        title: 'Behind the Scenes: Studio',
+        source: 'Azad Gallery',
+        timestamp: '2 days ago',
+        description: 'The team working hard on the upcoming documentary release.',
+        category: Category.GALLERY,
+        url: '#',
+        imageUrl: 'https://picsum.photos/800/600?random=102'
+    },
+    {
+        id: 'gal3',
+        title: 'Award Ceremony 2024',
+        source: 'Azad Gallery',
+        timestamp: 'Last Week',
+        description: 'Moments of pride as Azad Studio receives recognition for unbiased journalism.',
+        category: Category.GALLERY,
+        url: '#',
+        imageUrl: 'https://picsum.photos/600/600?random=103'
+    },
+     {
+        id: 'gal4',
+        title: 'Field Reporting',
+        source: 'Azad Gallery',
+        timestamp: 'Last Week',
+        description: 'On-ground reporting from the districts of Telangana.',
+        category: Category.GALLERY,
+        url: '#',
+        imageUrl: 'https://picsum.photos/600/900?random=104'
+    }
+];
 
 export const FALLBACK_NEWS: Article[] = [
   // --- HYDERABAD ---
@@ -179,5 +228,8 @@ export const FALLBACK_NEWS: Article[] = [
     url: '#',
     imageUrl: ASSET_LOGO_URL
   },
-  ...generateFallback('az_extra_', Category.AZAD_STUDIO, 'Studio Announcement', 9)
+  ...generateFallback('az_extra_', Category.AZAD_STUDIO, 'Studio Announcement', 9),
+  
+  // --- GALLERY ---
+  ...FALLBACK_GALLERY_POSTS
 ];

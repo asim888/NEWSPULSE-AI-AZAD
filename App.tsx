@@ -118,16 +118,16 @@ const InteractiveBackground = () => {
       ball.x += (mouse.x - ball.x) * 0.15;
       ball.y += (mouse.y - ball.y) * 0.15;
 
-      for(let k=0; k<3; k++) { 
+      for(let k=0; k<2; k++) { // Less particles
           const angle = Math.random() * Math.PI * 2;
-          const r = Math.random() * 2; 
+          const r = Math.random() * 1; 
           particles.push({
               x: ball.x + Math.cos(angle) * r,
               y: ball.y + Math.sin(angle) * r,
-              vx: (Math.random() - 0.5) * 1,
-              vy: (Math.random() - 0.5) * 1 - 0.5,
+              vx: (Math.random() - 0.5) * 0.5,
+              vy: (Math.random() - 0.5) * 0.5 - 0.2,
               life: 1.0,
-              size: Math.random() * 2 + 1 
+              size: Math.random() * 1 + 0.5 // Smaller particles
           });
       }
 
@@ -153,7 +153,8 @@ const InteractiveBackground = () => {
         ctx.fill();
       }
 
-      const gradient = ctx.createRadialGradient(ball.x, ball.y, 1, ball.x, ball.y, 6); 
+      // Smaller Core
+      const gradient = ctx.createRadialGradient(ball.x, ball.y, 0.5, ball.x, ball.y, 3); 
       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
       gradient.addColorStop(0.3, 'rgba(255, 215, 0, 0.6)');
       gradient.addColorStop(0.6, 'rgba(255, 69, 0, 0.2)');
@@ -161,7 +162,7 @@ const InteractiveBackground = () => {
 
       ctx.fillStyle = gradient;
       ctx.beginPath();
-      ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2); 
+      ctx.arc(ball.x, ball.y, 4, 0, Math.PI * 2); 
       ctx.fill();
 
       requestAnimationFrame(animate);
@@ -195,8 +196,9 @@ const WelcomeScreen = ({ onEnter }: { onEnter: () => void }) => {
         
         <div className="mb-10 relative group animate-fade-in">
           <div className="absolute inset-0 bg-gold-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000 rounded-full"></div>
-          <div className="relative p-1 rounded-full bg-gradient-to-tr from-gold-700 via-gold-500 to-gold-700 shadow-2xl">
-             <div className="bg-noir-950 rounded-full p-6 border-4 border-noir-900">
+          {/* Made the gold circle thinner by reducing padding to p-1 and border width */}
+          <div className="relative p-1 rounded-full bg-gradient-to-tr from-gold-700 via-gold-500 to-gold-700 shadow-2xl border border-gold-400">
+             <div className="bg-noir-950 rounded-full p-6 border-2 border-noir-900">
                 <img src={LOGO_URL} alt="Logo" className="w-32 h-32 object-contain drop-shadow-xl" />
              </div>
           </div>
@@ -205,8 +207,8 @@ const WelcomeScreen = ({ onEnter }: { onEnter: () => void }) => {
         <h1 className="text-5xl md:text-7xl font-serif font-bold text-gold-500 mb-2 tracking-tight drop-shadow-sm">
           {APP_NAME}
         </h1>
-
-        <p className="text-lg md:text-2xl text-gold-400 font-serif italic mb-8 tracking-wide">
+        
+        <p className="text-xl md:text-2xl text-gold-400 font-serif italic mb-8 tracking-wide">
           By Abu Aimal, Aimal Akram & Azad Studio
         </p>
 
@@ -248,7 +250,7 @@ const PremiumModal = ({ onClose, onTrialStart, onPaymentComplete }: { onClose: (
                 
                 <h2 className="text-2xl font-bold text-white mb-2">Unlock Premium Access</h2>
                 <p className="text-gray-400 mb-8">
-                Get exclusive access to Hyderabad, Telangana, India, International, and Sports sections.
+                Get exclusive access to Hyderabad, Telangana, India, International, Sports, and Gallery sections.
                 </p>
                 
                 <div className="space-y-4">
@@ -310,6 +312,28 @@ const PremiumModal = ({ onClose, onTrialStart, onPaymentComplete }: { onClose: (
     </div>
   );
 };
+
+const Lightbox = ({ article, onClose }: { article: Article; onClose: () => void }) => {
+    return (
+        <div className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4" onClick={onClose}>
+            <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gold-500 p-2">
+                <IconClose />
+            </button>
+            <div className="max-w-5xl max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
+                <img 
+                    src={article.imageUrl || FALLBACK_ARTICLE_IMAGE} 
+                    alt={article.title} 
+                    className="max-w-full max-h-[80vh] object-contain border-2 border-zinc-800 rounded-lg shadow-2xl"
+                />
+                <div className="mt-4 text-center">
+                    <h3 className="text-gold-500 font-serif text-xl">{article.title}</h3>
+                    <p className="text-gray-400 text-sm mt-1">{article.description}</p>
+                    <span className="text-xs text-zinc-500 uppercase mt-2 block">{article.timestamp}</span>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 interface ArticleModalProps {
   article: Article;
@@ -492,7 +516,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
                 <select
                     value={activeTab}
                     onChange={(e) => setActiveTab(e.target.value as any)}
-                    className="w-full bg-zinc-900 border border-zinc-700 text-white text-sm rounded-lg focus:ring-gold-500 focus:border-gold-500 block p-3 appearance-none cursor-pointer hover:border-gold-600/50 transition-colors"
+                    className="w-full bg-zinc-900 border border-zinc-700 text-white text-sm py-2 px-3 rounded-lg focus:ring-gold-500 focus:border-gold-500 block appearance-none cursor-pointer hover:border-gold-600/50 transition-colors"
                 >
                     <option value="original">English (Full Article)</option>
                     <option value="summary">AI Summary (English)</option>
@@ -534,10 +558,10 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose }) => {
           <button 
             disabled={audioLoading}
             onClick={handlePlayAudio}
-            className={`flex items-center gap-2 px-6 py-2 rounded-full font-bold transition-all w-full md:w-auto justify-center text-sm border ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold transition-all w-full md:w-auto justify-center text-sm border ${
               playing 
                 ? 'bg-zinc-900 text-red-400 border-red-800 hover:border-red-600' 
-                : 'bg-zinc-900 text-gold-500 border-gold-600 hover:bg-gold-600/10 shadow-lg shadow-gold-500/10'
+                : 'bg-black text-gold-500 border-gold-600 hover:bg-gold-600/10 shadow-lg shadow-gold-500/10'
             } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {audioLoading ? (
@@ -571,6 +595,7 @@ export default function App() {
   const [loadingNews, setLoadingNews] = useState(false);
   const [breakingHeadlines, setBreakingHeadlines] = useState<string[]>([]);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [lightboxArticle, setLightboxArticle] = useState<Article | null>(null);
 
   const addToast = (title: string, message: string, type: 'success' | 'info' | 'warning' = 'info') => {
       const id = Date.now();
@@ -641,12 +666,6 @@ export default function App() {
   };
 
   useEffect(() => {
-     if (currentCategory === Category.AZAD_STUDIO) {
-        setNewsItems([]); 
-        setLoadingNews(false);
-        return;
-     }
-
      if (currentCategory === Category.FOUNDERS) {
        setNewsItems([]);
        setLoadingNews(false);
@@ -713,6 +732,7 @@ export default function App() {
 
   const isAzadChannel = currentCategory === Category.AZAD_STUDIO;
   const isFoundersPage = currentCategory === Category.FOUNDERS;
+  const isGalleryPage = currentCategory === Category.GALLERY;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -723,13 +743,13 @@ export default function App() {
 
       <header className="sticky top-0 z-30 bg-noir-900/80 backdrop-blur-md border-b border-zinc-800 shadow-xl">
         <div className="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto w-full">
-          <div className="flex items-center gap-4">
-             <img src={LOGO_URL} alt="Azad Studio" className="w-14 h-14 object-contain drop-shadow-2xl" />
+          <div className="flex items-center gap-4 bg-noir-900/50 backdrop-blur-md border border-gold-600/30 rounded-full px-4 py-2 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+             <img src={LOGO_URL} alt="Azad Studio" className="w-12 h-12 object-contain drop-shadow-2xl" />
              <div className="flex flex-col justify-center">
-               <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold leading-none tracking-tight text-gold-500">
+               <h1 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold leading-none tracking-tight text-gold-500">
                  {APP_NAME}
                </h1>
-               <span className="text-[10px] md:text-xs text-gold-500/80 font-bold uppercase tracking-widest mt-1">
+               <span className="text-[9px] md:text-[10px] text-gold-500/80 font-bold uppercase tracking-widest mt-1">
                  Abu Aimal, Aimal Akram & Azad Studio
                </span>
              </div>
@@ -742,11 +762,11 @@ export default function App() {
           </button>
         </div>
         
-        <div className="relative border-y border-gold-600/30 shadow-lg z-20 h-8 bg-gradient-to-r from-[#2A1E18] via-[#3E2723] to-[#2A1E18] flex items-center">
+        <div className="relative border-y border-gold-600/30 shadow-lg z-20 h-8 bg-[linear-gradient(180deg,#3E2723_0%,#5D4037_50%,#3E2723_100%)] flex items-center">
             {/* Static Label (Absolute Left) */}
-            <div className="absolute left-0 top-0 bottom-0 z-20 flex items-center px-4 bg-[#3E2723] shadow-[4px_0_10px_rgba(0,0,0,0.5)]">
+            <div className="absolute left-0 top-0 bottom-0 z-20 flex items-center px-4 bg-[#3E2723] shadow-[4px_0_10px_rgba(0,0,0,0.5)] border-r border-gold-600/20">
                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2"></div>
-                 <span className="text-white text-xs font-bold whitespace-nowrap">BREAKING NEWS</span>
+                 <span className="text-white text-xs font-bold whitespace-nowrap tracking-wide">BREAKING NEWS</span>
             </div>
 
             {/* Scrolling Content (Padded Left) */}
@@ -794,22 +814,66 @@ export default function App() {
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
         
         {isAzadChannel ? (
-          <div className="max-w-4xl mx-auto space-y-4 animate-fade-in">
+          <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
                <div className="flex items-center justify-center mb-6">
                  <div className="flex items-center gap-2 bg-noir-900 border border-gold-600/30 px-4 py-2 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.1)]">
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                     <h2 className="text-gold-500 text-sm font-bold uppercase tracking-widest">Azad Studio Live</h2>
                  </div>
                </div>
-               <div className="bg-zinc-900 border border-zinc-800 rounded-xl h-[75vh] flex items-center justify-center relative overflow-hidden shadow-2xl shadow-black">
-                 <iframe 
-                   src="https://t.me/s/AzadStudioOfficial?embed=1&discussion=1" 
-                   className="w-full h-full border-none"
-                   title="Azad Studio Telegram"
-                 />
-                 <div className="absolute inset-0 -z-10 flex flex-col items-center justify-center text-zinc-700">
-                    <p>Loading Secure Telegram Feed...</p>
-                 </div>
+
+               {/* Removed the Telegram iframe here to prevent connection refusal */}
+               
+               <div className="pt-8 border-t border-zinc-800">
+                  <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-2xl font-bold text-white">Latest Updates</h2>
+                      <span className="text-xs text-gold-500 uppercase tracking-widest">From Database</span>
+                  </div>
+                  
+                  {loadingNews ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {[1,2,3,4].map(i => (
+                              <div key={i} className="bg-noir-900 h-64 rounded-xl animate-pulse">
+                                  <div className="bg-zinc-800 h-40 w-full rounded-t-xl"></div>
+                                  <div className="p-4 space-y-2">
+                                      <div className="bg-zinc-800 h-4 w-3/4 rounded"></div>
+                                      <div className="bg-zinc-800 h-3 w-full rounded"></div>
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+                  ) : newsItems.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {newsItems.map(article => (
+                              <div 
+                                  key={article.id}
+                                  onClick={() => setSelectedArticle(article)}
+                                  className="bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-gold-600 transition-all cursor-pointer group"
+                              >
+                                  {article.imageUrl && (
+                                      <div className="h-48 overflow-hidden relative">
+                                          <img 
+                                              src={article.imageUrl} 
+                                              alt={article.title} 
+                                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                              onError={(e) => { (e.target as HTMLImageElement).src = ASSET_LOGO_URL; }} 
+                                          />
+                                          <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent h-12"></div>
+                                      </div>
+                                  )}
+                                  <div className="p-4">
+                                      <div className="flex items-center gap-2 mb-2 text-[10px] text-gray-500">
+                                          <span className="uppercase tracking-widest">{article.timestamp}</span>
+                                      </div>
+                                      <h3 className="text-white font-bold mb-2 line-clamp-2 group-hover:text-gold-500 transition-colors">{article.title}</h3>
+                                      <p className="text-gray-400 text-sm line-clamp-3">{article.description}</p>
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+                  ) : (
+                      <p className="text-gray-500 text-center py-10">No recent updates found in database.</p>
+                  )}
                </div>
           </div>
         ) : isFoundersPage ? (
@@ -879,6 +943,34 @@ export default function App() {
                 </div>
              </div>
           </div>
+        ) : isGalleryPage ? (
+            <div className="animate-fade-in">
+                <div className="text-center mb-8">
+                     <h2 className="text-3xl font-black text-white tracking-tight">
+                        <span className="text-gold-500">Azad Gallery</span>
+                     </h2>
+                     <p className="text-gray-500 text-sm mt-2">Moments from the field, studio, and community.</p>
+                </div>
+                <div className="columns-2 md:columns-3 gap-4 space-y-4">
+                    {newsItems.map(item => (
+                        <div 
+                            key={item.id} 
+                            onClick={() => setLightboxArticle(item)}
+                            className="break-inside-avoid bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden cursor-pointer hover:border-gold-600 transition-all group relative"
+                        >
+                            <img 
+                                src={item.imageUrl || FALLBACK_ARTICLE_IMAGE} 
+                                alt={item.title} 
+                                className="w-full h-auto object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <h4 className="text-white text-sm font-bold">{item.title}</h4>
+                                <span className="text-gold-500 text-[10px] uppercase">{item.timestamp}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         ) : (
           <div>
             {loadingNews ? (
@@ -1034,6 +1126,13 @@ export default function App() {
           article={selectedArticle}
           onClose={() => setSelectedArticle(null)}
         />
+      )}
+      
+      {lightboxArticle && (
+          <Lightbox 
+            article={lightboxArticle}
+            onClose={() => setLightboxArticle(null)}
+          />
       )}
 
     </div>

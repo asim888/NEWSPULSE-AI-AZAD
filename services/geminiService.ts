@@ -1,4 +1,5 @@
-import { GoogleGenAI, Type, Modality } from "@google/genai";
+
+import { GoogleGenAI, Type, Modality, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { EnhancedArticleContent } from "../types";
 import { supabase, isSupabaseConfigured } from "./supabaseClient";
 import { getEnv } from "../utils/env";
@@ -119,11 +120,14 @@ export const enhanceArticle = async (
             .single();
         
         if (data && !error) {
+            console.log("[GeminiService] Article Cache Hit from Supabase");
             const content = data.data as EnhancedArticleContent;
             articleMemoryCache.set(id, content);
             return content;
         }
-    } catch (e) {}
+    } catch (e) {
+        // Silent fail on cache miss
+    }
   }
 
   const prompt = `
@@ -251,13 +255,14 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
               .single();
           
           if (data && !error) {
+              console.log("[GeminiService] Audio Cache Hit from Supabase");
               audioMemoryCache.set(cacheKey, data.audio_data);
               return { audioData: data.audio_data };
           }
       } catch (e) {}
   }
 
-  // Sanitize text
+  // Sanitize text: Remove URLs, markdown chars, and extra whitespace.
   const cleanText = text
     .replace(/https?:\/\/\S+/g, '')
     .replace(/[*#_`~>\[\]\(\)]/g, '')
@@ -268,6 +273,7 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
       throw new Error("Audio generation failed: Text was empty after sanitization.");
   }
 
+  // Cap at 2000 chars to avoid model limits while keeping most context
   const speechText = cleanText.slice(0, 2000);
   let base64Audio: string | null = null;
 
@@ -276,22 +282,36 @@ export const generateNewsAudio = async (text: string): Promise<{ audioData: stri
       const aiClient = getAI();
       if (!aiClient) throw new Error("Gemini API Key missing");
 
+      // Use strictly defined safety settings to prevent "finishReason: OTHER" 
+      // which happens when news content triggers default safety filters.
+      const safetySettings = [
+          { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE }
+      ];
+
       const response = await aiClient.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
         contents: [{
             parts: [{ text: speechText }]
         }],
         config: {
-            responseModalities: [Modality.AUDIO],
+            responseModalities: [Modality.AUDIO], 
             speechConfig: {
-            voiceConfig: {
-                prebuiltVoiceConfig: { voiceName: 'Kore' }
-            }
-            }
+                voiceConfig: {
+                    prebuiltVoiceConfig: { voiceName: 'Kore' }
+                }
+            },
+            safetySettings: safetySettings
         }
       });
       
       base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data || null;
+
+      if (!base64Audio && response.candidates?.[0]?.finishReason) {
+         console.warn(`Gemini TTS Finish Reason: ${response.candidates[0].finishReason}`);
+      }
 
   } catch (geminiError) {
       console.warn("Gemini TTS Failed, trying OpenAI...", geminiError);

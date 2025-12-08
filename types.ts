@@ -1,3 +1,4 @@
+
 export enum Category {
   AZAD_STUDIO = 'Azad Studio',
   HYDERABAD = 'Hyderabad',
@@ -5,7 +6,8 @@ export enum Category {
   INDIA = 'India',
   INTERNATIONAL = 'International',
   SPORTS = 'Sports',
-  FOUNDERS = 'Founders'
+  FOUNDERS = 'Founders',
+  GALLERY = 'Gallery'
 }
 
 export interface Article {
