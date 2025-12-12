@@ -6,7 +6,7 @@ import * as RssService from './services/rssService';
 import { isSupabaseConfigured } from './services/supabaseClient';
 import { getEnv } from './utils/env';
 
-// Icons
+// --- Icons ---
 const IconCrown = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-gold-500">
     <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
@@ -50,17 +50,34 @@ const IconTelegram = () => (
   </svg>
 );
 
-const IconDatabase = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-red-500 mb-2">
-    <path d="M21 6.375c0 2.692-4.03 4.875-9 4.875S3 9.067 3 6.375 7.03 1.5 12 1.5s9 2.183 9 4.875Z" />
-    <path d="M12 12.75c2.685 0 5.19-.504 7.078-1.354.435-.198.808-.426 1.112-.676.257-.213.468-.45.617-.704.22-.375.336-.787.294-1.206a2.25 2.25 0 0 0-.256-.913C19.82 8.79 16.32 9.75 12 9.75c-4.32 0-7.82-.96-8.845-1.853a2.25 2.25 0 0 0-.256.913c-.042.419.074.831.294 1.206.149.254.36.491.617.704.304.25.677.478 1.112.676C6.81 12.246 9.315 12.75 12 12.75Z" />
-    <path d="M12 18.75c2.685 0 5.19-.504 7.078-1.354.435-.198.808-.426 1.112-.676.257-.213.468-.45.617-.704.22-.375.336-.787.294-1.206a2.25 2.25 0 0 0-.256-.913C19.82 14.79 16.32 15.75 12 15.75c-4.32 0-7.82-.96-8.845-1.853a2.25 2.25 0 0 0-.256.913c-.042.419.074.831.294 1.206.149.254.36.491.617.704.304.25.677.478 1.112.676C6.81 18.246 9.315 18.75 12 18.75Z" />
-  </svg>
-);
-
 const IconLink = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+  </svg>
+);
+
+const IconPlay = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-white opacity-90 drop-shadow-lg filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+    <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
+  </svg>
+);
+
+const IconImage = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
+  </svg>
+);
+
+const IconFilm = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M11.25 5.337c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.036 1.007-1.875 2.25-1.875S15 2.34 15 3.375c0 .369-.128.713-.349 1.003-.215.283-.401.604-.401.959 0 .332.278.598.61.578 1.91-.114 3.79-.342 5.632-.676a.75.75 0 01.878.645 12.09 12.09 0 01.376 3.107 15.156 15.156 0 01-.366 2.806.75.75 0 01-.736.598c-.287.006-.575.009-.861.009-3.21 0-6.173-.972-8.682-2.658a.75.75 0 01-.22-.903c.316-.628.53-1.303.626-2.016.066-.492.385-.886.843-.984zM9 5.337c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.035-1.008-1.875-2.25-1.875S5.25 2.34 5.25 3.375c0 .369.128.713.349 1.003.215.283.401.604.401.959 0 .332-.278.598-.61.578a23.974 23.974 0 00-4.045 1.045.75.75 0 00-.334.98c.55 1.182 1.255 2.278 2.083 3.266a.75.75 0 00.94.173c.75-.41 1.55-.747 2.387-1.003a.75.75 0 00.528-.843 8.97 8.97 0 01-.157-1.196z" />
+    <path fillRule="evenodd" d="M12.553 10.375a.75.75 0 00-1.106 0c-3.79 3.79-5.947 7.294-5.947 9.875 0 1.21.905 2.25 2.25 2.25 1.066 0 2.008-.667 2.25-1.574a2.25 2.25 0 014 0c.242.907 1.184 1.574 2.25 1.574 1.345 0 2.25-1.04 2.25-2.25 0-2.581-2.157-6.085-5.947-9.875z" clipRule="evenodd" />
+  </svg>
+);
+
+const IconExpand = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
   </svg>
 );
 
@@ -425,20 +442,30 @@ const PremiumModal = ({ onClose, onTrialStart, onPaymentComplete }: { onClose: (
 
 const Lightbox = ({ article, onClose }: { article: Article; onClose: () => void }) => {
     return (
-        <div className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4" onClick={onClose}>
-            <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gold-500 p-2">
+        <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
+            <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gold-500 p-2 z-10 bg-black/50 rounded-full transition-colors">
                 <IconClose />
             </button>
-            <div className="max-w-5xl max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
-                <img 
-                    src={article.imageUrl || FALLBACK_ARTICLE_IMAGE} 
-                    alt={article.title} 
-                    className="max-w-full max-h-[80vh] object-contain border-2 border-zinc-800 rounded-lg shadow-2xl"
-                />
-                <div className="mt-4 text-center">
-                    <h3 className="text-gold-500 font-serif text-xl">{article.title}</h3>
-                    <p className="text-gray-400 text-sm mt-1">{article.description}</p>
-                    <span className="text-xs text-zinc-500 uppercase mt-2 block">{article.timestamp}</span>
+            <div className="w-full max-w-7xl max-h-[90vh] flex flex-col items-center justify-center relative" onClick={e => e.stopPropagation()}>
+                {article.mediaType === 'video' && article.videoUrl ? (
+                    <video 
+                        src={article.videoUrl} 
+                        poster={article.imageUrl}
+                        controls 
+                        autoPlay
+                        className="max-w-full max-h-[85vh] w-auto h-auto object-contain shadow-2xl bg-black rounded-lg border border-zinc-800"
+                    />
+                ) : (
+                    <img 
+                        src={article.imageUrl || FALLBACK_ARTICLE_IMAGE} 
+                        alt={article.title} 
+                        className="max-w-full max-h-[85vh] object-contain shadow-2xl rounded-lg border border-zinc-800"
+                    />
+                )}
+                <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
+                     <div className="inline-block bg-black/60 backdrop-blur-md px-6 py-3 rounded-full max-w-3xl border border-white/10">
+                        <h3 className="text-white font-bold text-sm md:text-base line-clamp-1">{article.title}</h3>
+                     </div>
                 </div>
             </div>
         </div>
@@ -546,9 +573,28 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
       if ('speechSynthesis' in window) {
           stopAudio(); // Ensure clean state
           
-          const lang = GeminiService.getDeviceVoiceLang(activeTab);
+          // Waterfall Strategy: Select Best Available Voice
+          const langCode = GeminiService.getDeviceVoiceLang(activeTab);
+          const voices = window.speechSynthesis.getVoices();
+          
+          // Priority 1: Exact Language Match
+          let selectedVoice = voices.find(v => v.lang === langCode);
+          
+          // Priority 2: Broad Language Match (e.g. 'hi-IN' -> 'hi')
+          if (!selectedVoice) {
+              const broadLang = langCode.split('-')[0];
+              selectedVoice = voices.find(v => v.lang.startsWith(broadLang));
+          }
+
           const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = lang;
+          if (selectedVoice) {
+              utterance.voice = selectedVoice;
+              utterance.lang = selectedVoice.lang;
+          } else {
+              // Fallback to English/System Default but try to set lang code hint
+              utterance.lang = langCode;
+          }
+
           utterance.rate = 0.9;
           // Clean text for device TTS as it often reads punctuation
           utterance.text = text.replace(/[*#_]/g, '');
@@ -562,6 +608,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
           
           window.speechSynthesis.speak(utterance);
           setPlaying(true);
+          addToast("Using Device Audio", "Neural voice unavailable, using system voice.", "info");
       } else {
           setPlaying(false);
           addToast("Audio Error", "Browser does not support audio.", "warning");
@@ -581,15 +628,14 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
     // If we are on translated tabs, we might still be generating.
     const isGenerating = textToRead.includes("generating...");
 
-    if (!textToRead || isGenerating) {
-      setAudioLoading(false);
-      // Fallback: Read the description if full content isn't ready
-      if (article.description && activeTab === 'original') {
-           playDeviceFallback(article.description);
-           return;
-      }
-      addToast("Please wait", "Translation is generating...", "info");
-      return;
+    // ALLOW PLAYBACK IMMEDIATELY if we are on the original tab and have content
+    if (activeTab === 'original' && !textToRead.includes("generating...")) {
+        // Proceed with audio generation/playback
+    } else if (!textToRead || isGenerating) {
+        // Only block if we are truly waiting for content on a translated tab
+        setAudioLoading(false);
+        addToast("Please wait", "Translation is generating...", "info");
+        return;
     }
 
     try {
@@ -598,8 +644,9 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
       const { audioData } = await GeminiService.generateNewsAudio(textToRead);
 
       // Initialize Audio Context if needed
+      // Remove sampleRate constraint to prevent NotSupportedError on some devices
       if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
 
       const binaryString = window.atob(audioData);
@@ -621,7 +668,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
 
     } catch (err) {
       console.warn("Gemini Audio failed, switching to Device TTS", err);
-      // Seamless Fallback to Device TTS
+      // Seamless Fallback to Device TTS (Waterfall Strategy)
       playDeviceFallback(textToRead);
     } finally {
       setAudioLoading(false);
@@ -730,7 +777,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
             ) : (
               <>
                  {playing ? <IconStop /> : <IconMic />} 
-                 {playing ? "Listen" : "Listen"}
+                 {playing ? "Stop" : "Listen"}
               </>
             )}
           </button>
@@ -744,6 +791,7 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, addToast 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<Category>(Category.AZAD_STUDIO);
+  const [azadTab, setAzadTab] = useState<'updates' | 'media'>('updates');
   const [subscription, setSubscription] = useState<SubscriptionStatus>({
       plan: 'free',
       expiry: null,
@@ -824,6 +872,10 @@ export default function App() {
       setShowPremiumModal(true);
     } else {
       setCurrentCategory(cat);
+      // Reset tab when switching back to Azad Studio
+      if (cat === Category.AZAD_STUDIO) {
+          setAzadTab('updates');
+      }
     }
   };
 
@@ -919,6 +971,12 @@ export default function App() {
   const isFoundersPage = currentCategory === Category.FOUNDERS;
   const isGalleryPage = currentCategory === Category.GALLERY;
 
+  const getMediaItems = () => {
+    return newsItems.filter(item => 
+        item.videoUrl || (item.imageUrl && item.imageUrl !== ASSET_LOGO_URL && item.imageUrl !== FALLBACK_ARTICLE_IMAGE)
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <InteractiveBackground />
@@ -1000,78 +1058,197 @@ export default function App() {
         
         {isAzadChannel ? (
           <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-               <div className="">
-                  <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-2xl font-bold text-white">Latest Updates</h2>
-                      <span className="text-xs text-gold-500 uppercase tracking-widest">From Database</span>
-                  </div>
-                  
-                  {loadingNews ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {[1,2,3,4].map(i => (
-                              <div key={i} className="bg-noir-900 h-64 rounded-xl animate-pulse">
-                                  <div className="bg-zinc-800 h-40 w-full rounded-t-xl"></div>
-                                  <div className="p-4 space-y-2">
-                                      <div className="bg-zinc-800 h-4 w-3/4 rounded"></div>
-                                      <div className="bg-zinc-800 h-3 w-full rounded"></div>
-                                  </div>
-                              </div>
-                          ))}
-                      </div>
-                  ) : newsItems.length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {newsItems.map(article => (
-                              <div 
-                                  key={article.id}
-                                  onClick={() => setSelectedArticle(article)}
-                                  className="bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-gold-600 transition-all cursor-pointer group"
-                              >
-                                  {article.mediaType === 'video' ? (
-                                      <div className="h-56 overflow-hidden relative bg-black">
-                                          <video 
-                                              src={article.imageUrl} 
-                                              controls 
-                                              className="w-full h-full object-contain"
-                                              onClick={(e) => e.stopPropagation()} 
-                                          />
-                                      </div>
-                                  ) : article.imageUrl && (
-                                      <div className="h-48 overflow-hidden relative">
-                                          <img 
-                                              src={article.imageUrl} 
-                                              alt={article.title} 
-                                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                              onError={(e) => { (e.target as HTMLImageElement).src = ASSET_LOGO_URL; }} 
-                                          />
-                                          <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent h-12"></div>
-                                      </div>
-                                  )}
-                                  
-                                  <div className="p-4">
-                                      <div className="flex items-center gap-2 mb-2 text-[10px] text-gray-500">
-                                          <span className="uppercase tracking-widest">{article.timestamp}</span>
-                                          {article.mediaType === 'video' && (
-                                              <span className="bg-red-900/50 text-red-400 px-2 py-0.5 rounded border border-red-800/50">VIDEO</span>
-                                          )}
-                                      </div>
-                                      <h3 className="text-white font-bold mb-2 line-clamp-2 group-hover:text-gold-500 transition-colors">{article.title}</h3>
-                                      <p className="text-gray-400 text-sm line-clamp-3 whitespace-pre-line">{article.description}</p>
-                                  </div>
-                              </div>
-                          ))}
-                      </div>
-                  ) : (
-                      <div className="flex flex-col items-center justify-center py-12 text-center bg-noir-900 border border-zinc-800 rounded-xl">
-                          <div className="bg-zinc-800/50 p-4 rounded-full mb-3 text-gold-500">
-                              <IconTelegram />
-                          </div>
-                          <p className="text-gray-400 font-bold text-sm">No recent updates found</p>
-                          <p className="text-gray-600 text-xs mt-1 max-w-xs mx-auto">
-                              Connecting to Live Feed... If this persists, the server might be waking up (15-30s).
-                          </p>
-                      </div>
-                  )}
+               
+               <div className="flex justify-center mb-6">
+                    <div className="bg-noir-900 border border-zinc-800 p-1 rounded-full flex gap-1">
+                        <button 
+                            onClick={() => setAzadTab('updates')}
+                            className={`flex items-center gap-2 px-6 py-2 rounded-full text-sm font-bold transition-all ${azadTab === 'updates' ? 'bg-gold-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            <span>Latest Updates</span>
+                        </button>
+                        <button 
+                            onClick={() => setAzadTab('media')}
+                            className={`flex items-center gap-2 px-6 py-2 rounded-full text-sm font-bold transition-all ${azadTab === 'media' ? 'bg-gold-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            <IconImage />
+                            <span>Media Gallery</span>
+                        </button>
+                    </div>
                </div>
+
+               {azadTab === 'updates' ? (
+                   <div className="">
+                      <div className="flex items-center justify-between mb-6">
+                          <h2 className="text-2xl font-bold text-white">Live Feed</h2>
+                          <span className="text-xs text-gold-500 uppercase tracking-widest">Telegram Integration</span>
+                      </div>
+                      
+                      {loadingNews ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {[1,2,3,4].map(i => (
+                                  <div key={i} className="bg-noir-900 h-64 rounded-xl animate-pulse">
+                                      <div className="bg-zinc-800 h-40 w-full rounded-t-xl"></div>
+                                      <div className="p-4 space-y-2">
+                                          <div className="bg-zinc-800 h-4 w-3/4 rounded"></div>
+                                          <div className="bg-zinc-800 h-3 w-full rounded"></div>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      ) : newsItems.length > 0 ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {newsItems.map(article => (
+                                  <div 
+                                      key={article.id}
+                                      onClick={() => setSelectedArticle(article)}
+                                      className="bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-gold-600 transition-all cursor-pointer group flex flex-col h-full hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]"
+                                  >
+                                      {article.mediaType === 'video' ? (
+                                        article.videoUrl ? (
+                                          <div className="aspect-video w-full overflow-hidden relative bg-black border-b border-zinc-800 group/video">
+                                              <video 
+                                                  src={article.videoUrl} 
+                                                  poster={article.imageUrl}
+                                                  controls 
+                                                  className="w-full h-full object-contain"
+                                                  onClick={(e) => e.stopPropagation()} 
+                                              />
+                                              <button 
+                                                  onClick={(e) => { e.stopPropagation(); setLightboxArticle(article); }}
+                                                  className="absolute top-2 right-2 bg-black/60 p-2 rounded-full text-white opacity-0 group-hover/video:opacity-100 transition-opacity hover:bg-gold-600 hover:text-black z-10 backdrop-blur-sm"
+                                                  title="Full Screen"
+                                              >
+                                                  <IconExpand />
+                                              </button>
+                                          </div>
+                                        ) : (
+                                            <div className="aspect-video w-full overflow-hidden relative group-hover:opacity-90 transition-opacity bg-black border-b border-zinc-800">
+                                                <img 
+                                                    src={article.imageUrl || ASSET_LOGO_URL} 
+                                                    alt={article.title} 
+                                                    className="w-full h-full object-cover opacity-60"
+                                                />
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <IconPlay />
+                                                </div>
+                                                <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] px-2 py-1 rounded">
+                                                    Watch on Telegram
+                                                </div>
+                                            </div>
+                                        )
+                                      ) : article.imageUrl && (
+                                          <div className="aspect-video w-full overflow-hidden relative border-b border-zinc-800 group/image">
+                                              <img 
+                                                  src={article.imageUrl} 
+                                                  alt={article.title} 
+                                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                  onError={(e) => { (e.target as HTMLImageElement).src = ASSET_LOGO_URL; }} 
+                                              />
+                                              <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent h-12"></div>
+                                              <button 
+                                                  onClick={(e) => { e.stopPropagation(); setLightboxArticle(article); }}
+                                                  className="absolute top-2 right-2 bg-black/60 p-2 rounded-full text-white opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-gold-600 hover:text-black z-10 backdrop-blur-sm"
+                                                  title="View Full Image"
+                                              >
+                                                  <IconExpand />
+                                              </button>
+                                          </div>
+                                      )}
+                                      
+                                      <div className="p-5 flex-1 flex flex-col">
+                                          <div className="flex items-center justify-between mb-3 border-b border-zinc-800 pb-2">
+                                              <div className="flex items-center gap-2 text-[10px] text-gray-500">
+                                                  <span className="uppercase tracking-widest text-gold-500">{article.timestamp}</span>
+                                                  {article.mediaType === 'video' && (
+                                                      <span className="bg-red-900/50 text-red-400 px-2 py-0.5 rounded border border-red-800/50">VIDEO</span>
+                                                  )}
+                                              </div>
+                                              <span className="text-[10px] text-zinc-500">Telegram</span>
+                                          </div>
+                                          
+                                          <h3 className="text-white font-serif font-bold text-xl mb-3 leading-snug group-hover:text-gold-500 transition-colors line-clamp-2">
+                                             {article.title}
+                                          </h3>
+                                          <p className="text-gray-400 text-sm line-clamp-3 whitespace-pre-line leading-relaxed mb-4 flex-1">
+                                             {article.description}
+                                          </p>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      ) : (
+                          <div className="flex flex-col items-center justify-center py-12 text-center bg-noir-900 border border-zinc-800 rounded-xl">
+                              <div className="bg-zinc-800/50 p-4 rounded-full mb-3 text-gold-500">
+                                  <IconTelegram />
+                              </div>
+                              <p className="text-gray-400 font-bold text-sm">No recent updates found</p>
+                              <p className="text-gray-600 text-xs mt-1 max-w-xs mx-auto">
+                                  Connecting to Live Feed... If this persists, the server might be waking up (15-30s).
+                              </p>
+                          </div>
+                      )}
+                   </div>
+               ) : (
+                   <div className="animate-fade-in">
+                       <div className="flex items-center justify-between mb-6">
+                          <h2 className="text-2xl font-bold text-white">Media Gallery</h2>
+                          <span className="text-xs text-gold-500 uppercase tracking-widest">Images & Videos</span>
+                      </div>
+                      
+                      <div className="columns-2 md:columns-3 gap-4 space-y-4">
+                        {getMediaItems().length > 0 ? (
+                            getMediaItems().map(item => (
+                                <div 
+                                    key={item.id} 
+                                    className="break-inside-avoid bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden cursor-pointer hover:border-gold-600 transition-all group relative"
+                                    onClick={() => setLightboxArticle(item)}
+                                >
+                                    {item.mediaType === 'video' ? (
+                                        <div className="relative">
+                                            {item.videoUrl ? (
+                                                <video 
+                                                    src={item.videoUrl} 
+                                                    className="w-full h-auto object-cover"
+                                                    muted
+                                                    loop
+                                                    onMouseOver={e => e.currentTarget.play()}
+                                                    onMouseOut={e => e.currentTarget.pause()}
+                                                />
+                                            ) : (
+                                                <img 
+                                                    src={item.imageUrl || ASSET_LOGO_URL} 
+                                                    alt={item.title} 
+                                                    className="w-full h-auto object-cover"
+                                                />
+                                            )}
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition-colors pointer-events-none">
+                                                <div className="bg-black/50 p-2 rounded-full backdrop-blur-sm">
+                                                    <IconPlay />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <img 
+                                            src={item.imageUrl || ASSET_LOGO_URL} 
+                                            alt={item.title} 
+                                            className="w-full h-auto object-cover"
+                                        />
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                        <h4 className="text-white text-xs font-bold line-clamp-2">{item.title}</h4>
+                                        <span className="text-gold-500 text-[10px] uppercase mt-1">{item.timestamp}</span>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                             <div className="col-span-full text-center py-12 text-gray-500">
+                                 <p>No media items found in the recent feed.</p>
+                             </div>
+                        )}
+                      </div>
+                   </div>
+               )}
           </div>
         ) : isFoundersPage ? (
           <div className="space-y-12 animate-fade-in">
@@ -1199,48 +1376,53 @@ export default function App() {
                     <div 
                         key={article.id}
                         onClick={() => setSelectedArticle(article)}
-                        className="group bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-gold-600/50 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)] transition-all cursor-pointer flex flex-col"
+                        className="group bg-noir-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-gold-600/50 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)] transition-all cursor-pointer flex flex-col h-full"
                     >
-                        <div className="relative h-36 overflow-hidden bg-black">
+                        <div className="relative aspect-video overflow-hidden bg-black border-b border-zinc-800">
                             <img 
                                 src={article.imageUrl || FALLBACK_ARTICLE_IMAGE} 
                                 alt={article.title}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
                                 onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_ARTICLE_IMAGE; }} 
                             />
-                            <div className="absolute top-2 right-2 bg-black/70 backdrop-blur text-white text-[10px] px-2 py-1 rounded border border-white/10">
+                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                            <div className="absolute top-3 left-3 bg-gold-600 text-black text-[10px] font-bold px-2 py-1 rounded shadow-lg uppercase tracking-wider">
                                 {article.category}
                             </div>
                         </div>
-                        <div className="p-4 flex-1 flex flex-col">
-                            <div className="flex items-center gap-2 mb-2">
-                                <img src={ASSET_LOGO_URL} className="w-10 h-10 object-contain" alt="News Pulse" />
-                                <span className="text-[10px] text-gray-400 uppercase tracking-widest">
-                                    {article.timestamp}
-                                </span>
+                        <div className="p-5 flex-1 flex flex-col relative">
+                            <div className="flex items-center justify-between mb-3 border-b border-zinc-800 pb-3">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-1 h-3 bg-gold-500 rounded-full"></div>
+                                    <span className="text-[10px] text-gray-300 font-bold uppercase tracking-widest">{article.source}</span>
+                                </div>
+                                <span className="text-[10px] text-gray-500">{article.timestamp}</span>
                             </div>
 
-                            <h3 className="text-white font-bold text-lg leading-snug mb-3 group-hover:text-gold-400 transition-colors line-clamp-3">
+                            <h3 className="text-white font-serif font-bold text-xl leading-snug mb-3 group-hover:text-gold-400 transition-colors line-clamp-3">
                                 {article.title}
                             </h3>
-                            <div className="flex-1 space-y-3">
+                            <div className="flex-1 flex flex-col">
                                 {article.description && 
                                  article.description.trim() !== article.title.trim() && 
                                  !article.description.toLowerCase().startsWith(article.title.toLowerCase().slice(0, 20)) && (
-                                   <p className="text-gray-400 text-sm line-clamp-3">
+                                   <p className="text-gray-400 text-sm line-clamp-3 mb-4 leading-relaxed">
                                        {article.description}
                                    </p>
                                 )}
                                 
-                                <div className="border-t border-zinc-800 pt-2 mt-2">
-                                    <p className="text-gold-600/70 text-[10px] uppercase font-bold mb-1 tracking-wider">Roman Urdu</p>
+                                <div className="mt-auto bg-zinc-950/50 border border-zinc-800/50 rounded-lg p-3 group-hover:border-gold-600/30 transition-colors">
+                                    <p className="text-gold-600/70 text-[10px] uppercase font-bold mb-1 tracking-wider flex items-center gap-1">
+                                        <span className="w-1.5 h-1.5 bg-gold-600 rounded-full inline-block"></span>
+                                        Roman Urdu
+                                    </p>
                                     {article.descriptionRomanUrdu ? (
-                                        <p className="text-gray-500 text-xs italic font-medium leading-relaxed">
+                                        <p className="text-gray-500 text-xs italic font-medium leading-relaxed line-clamp-2">
                                             "{article.descriptionRomanUrdu}"
                                         </p>
                                     ) : (
                                         <p className="text-gray-600/60 text-[10px] italic font-medium leading-relaxed">
-                                            Tap card to generate Roman Urdu translation...
+                                            Tap card to generate translation...
                                         </p>
                                     )}
                                 </div>
